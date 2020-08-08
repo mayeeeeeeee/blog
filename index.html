@@ -17,13 +17,13 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"mayeeeeeeee.github.io","root":"/blog/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.json"};
+    var CONFIG = {"hostname":"mayeeeeeeee.github.io","root":"/blog/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.json"};
   </script>
 
   <meta property="og:type" content="website">
-<meta property="og:title" content="Wangerous&#39; Blog">
+<meta property="og:title" content="zhiwen&#39; Blog">
 <meta property="og:url" content="https://mayeeeeeeee.github.io/index.html">
-<meta property="og:site_name" content="Wangerous&#39; Blog">
+<meta property="og:site_name" content="zhiwen&#39; Blog">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:author" content="zhiwen">
 <meta name="twitter:card" content="summary">
@@ -39,9 +39,17 @@
     isPost : false,
     lang   : 'zh-CN'
   };
+   (function(){
+        if(''){
+            if (prompt('请输入文章密码') !== ''){
+                alert('密码错误！');
+                history.back();
+            }
+        }
+    })();
 </script>
 
-  <title>Wangerous' Blog</title>
+  <title>zhiwen' Blog</title>
   
 
 
@@ -92,7 +100,7 @@
 
     <a href="/blog/" class="brand" rel="start">
       <span class="logo-line-before"><i></i></span>
-      <h1 class="site-title">Wangerous' Blog</h1>
+      <h1 class="site-title">zhiwen' Blog</h1>
       <span class="logo-line-after"><i></i></span>
     </a>
   </div>
@@ -183,6 +191,343 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://mayeeeeeeee.github.io/2020/08/03/IOC%E4%B8%8EDI/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/blog/images/avatar.png">
+      <meta itemprop="name" content="zhiwen">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="zhiwen' Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/blog/2020/08/03/IOC%E4%B8%8EDI/" class="post-title-link" itemprop="url">IOC与DI</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-08-03 10:19:51" itemprop="dateCreated datePublished" datetime="2020-08-03T10:19:51+08:00">2020-08-03</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-08-09 00:23:13" itemprop="dateModified" datetime="2020-08-09T00:23:13+08:00">2020-08-09</time>
+              </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>5.6k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>9 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>IOC即<strong>控制反转</strong>(Inversion of Control)，是<strong>依赖倒置原则</strong>(Dependency Inversion Principle，软件设计五大原则之一)一种代码设计的思路。具体实现方式为<strong>依赖注入</strong>(Dependency Injection, DI)。三者具体关系为：</p>
+<p>依赖倒置原则 –&gt; 控制反转(设计思路) –&gt; 依赖注入(具体实现思路)</p>
+<p><strong>何为依赖倒置原则？Robert C. Martin给出的定义如下：</strong></p>
+<blockquote>
+<p>高层模块不应该依赖于底层模块，二者都应该依赖于抽象</p>
+<p>抽象不应该依赖于细节，细节应该依赖于抽象</p>
+</blockquote>
+<p>术语较为晦涩难懂，举个栗子：</p>
+<p><img src="/blog/2020/08/03/IOC%E4%B8%8EDI/%E6%B1%BD%E8%BD%A6%E4%BE%9D%E8%B5%96%E8%BD%AE%E8%83%8E.png" alt="preview"></p>
+<p>当设计汽车时，先设计轮胎，然后底盘依赖设计好的轮胎进行设计，直至设计好整个汽车。而此时当轮胎需要变化时，地盘需要跟着变化进而适应轮胎的变化，进而整个汽车都需要变化。</p>
+<p>我们换一种思路</p>
+<p><img src="/blog/2020/08/03/IOC%E4%B8%8EDI/%E8%BD%AE%E8%83%8E%E4%BE%9D%E8%B5%96%E6%B1%BD%E8%BD%A6.png" alt="preview"></p>
+<p>如果先设计整个汽车概况，然后根据汽车概况设计车身，然后设计地盘、轮胎，此时整个依赖链条发生了反转，当轮胎发生变化时，只需要重新设计轮胎即可。<strong>这就是依赖反转的过程！</strong></p>
+<p><strong>下面用代码来说明:</strong></p>
+<p>实体类：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//汽车类(依赖车架)</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Car</span> </span>&#123;</span><br><span class="line">  <span class="keyword">private</span> Framework framework;<span class="comment">//车架</span></span><br><span class="line">  Car() &#123;<span class="keyword">this</span>.framework = <span class="keyword">new</span> framework();&#125;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span></span>&#123;...&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//车架类(依赖底盘)</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Framework</span></span>&#123;</span><br><span class="line">  <span class="keyword">private</span> Bottom bottom;</span><br><span class="line">  Framework()&#123;<span class="keyword">this</span>.bottom = <span class="keyword">new</span> Bottom();&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//底盘类(依赖轮胎)</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Bottom</span></span>&#123;</span><br><span class="line">  <span class="keyword">private</span> Tire tire;</span><br><span class="line">  Bottom()&#123;<span class="keyword">this</span>.tire = <span class="keyword">new</span> Tire();&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//轮胎类</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Tire</span></span>&#123;</span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">int</span> size;</span><br><span class="line">  Tire()&#123;<span class="keyword">this</span>.size = <span class="number">10</span>;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>业务类：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//实例化一个汽车对象, 并执行run方法</span></span><br><span class="line">Car car = <span class="keyword">new</span> Car();</span><br><span class="line">car.run();</span><br></pre></td></tr></table></figure>
+
+<p>此时依赖关系为Car -&gt; Framework -&gt; Bottom -&gt;Tire，若此时业务需求发生了变化，需自定义轮胎尺寸，即Tire类size属性根据参数初始化。则上述代码需要修改。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//首先修改轮胎类</span></span><br><span class="line">Class Tire&#123;</span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">int</span> size;</span><br><span class="line">  Tire(<span class="keyword">int</span> size)&#123;<span class="keyword">this</span>.size = size;&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//然后需要修改底盘类(依赖轮胎)</span></span><br><span class="line">Class Bottom&#123;</span><br><span class="line">  <span class="keyword">private</span> Tire tire;</span><br><span class="line">  Bottom(<span class="keyword">int</span> tireSize)&#123;<span class="keyword">this</span>.tire = <span class="keyword">new</span> Tire(tireSize);&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//进而修改车架类(依赖底盘)</span></span><br><span class="line">Class Framework&#123;</span><br><span class="line">  <span class="keyword">private</span> Bottom bottom;</span><br><span class="line">  Framework(<span class="keyword">int</span> tireSize)&#123;<span class="keyword">this</span>.bottom = <span class="keyword">new</span> Bottom(tireSize);&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//最后修改汽车类(依赖车架)</span></span><br><span class="line">Class Car &#123;</span><br><span class="line">  <span class="keyword">private</span> Framework framework;<span class="comment">//车架</span></span><br><span class="line">  Car(<span class="keyword">int</span> tireSize) &#123;<span class="keyword">this</span>.framework = <span class="keyword">new</span> Framework(tireSize);&#125;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span></span>&#123;...&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//实例化一个轮胎尺寸为30的汽车对象, 并执行run方法</span></span><br><span class="line">Car car = <span class="keyword">new</span> Car(<span class="number">30</span>);</span><br><span class="line">car.run();</span><br></pre></td></tr></table></figure>
+
+<p>这种高层依赖底层的依赖关系，底层模块发生变化，高层模块都要随之变化，可谓牵一发而动全身，维护成本极高。违反了依赖导致原则。要遵守依赖导致原则，达到控制反转，通常使用依赖注入的方式来实现，具体有<strong>构造方法注入</strong>、<strong>setter方法注入</strong>、<strong>接口注入</strong>三种实现方法，构造方法注入、setter方法注入适用于链式依赖关系（如本例）。接口注入适用于星型依赖关系。下面尝试使用构造方法注入、setter方法注入对本例进行改造。</p>
+<ul>
+<li><strong>构造方法注入</strong></li>
+</ul>
+<p>实体类改造</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//汽车类(构造时需注入Framework属性)</span></span><br><span class="line">Class Car &#123;</span><br><span class="line">  <span class="keyword">private</span> Framework framework;<span class="comment">//车架</span></span><br><span class="line">  Car(Framework framework) &#123;<span class="keyword">this</span>.framework = framework;&#125;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span></span>&#123;...&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//车架类(构造时需注入Bottom属性)</span></span><br><span class="line">Class Framework&#123;</span><br><span class="line">  <span class="keyword">private</span> Bottom bottom;</span><br><span class="line">  Framework(Bottom bottom)&#123;<span class="keyword">this</span>.bottom = bottom;&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//底盘类(构造时需注入tire属性)</span></span><br><span class="line">Class Bottom&#123;</span><br><span class="line">  <span class="keyword">private</span> Tire tire;</span><br><span class="line">  Bottom(Tire tire)&#123;<span class="keyword">this</span>.tire = tire;&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//轮胎类</span></span><br><span class="line">Class Tire&#123;</span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">int</span> size;</span><br><span class="line">  Tire()&#123;<span class="keyword">this</span>.size = <span class="number">10</span>;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>业务类</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">    构造Car对象需要注入Framework对象，构造Framework对象需要注入Bottom对象，构造Bottom对象需要Tire对象，所以要先构造底层Tire对象，逐步向高层注入。进而实现了控制反转。</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line">Tire tire = <span class="keyword">new</span> Tire(<span class="number">40</span>);</span><br><span class="line">Bottom bottom = <span class="keyword">new</span> Bottom(tire);</span><br><span class="line">Framework framework = <span class="keyword">new</span> Framework(bottom);</span><br><span class="line">Car car = <span class="keyword">new</span> Car(framework);</span><br><span class="line">car.run();</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>Setter方法注入</strong></li>
+</ul>
+<p>实体类改造</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//汽车类(添加framework属性的setter方法)</span></span><br><span class="line">Class Car &#123;</span><br><span class="line">  <span class="keyword">private</span> Framework framework;<span class="comment">//车架</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setFramework</span><span class="params">(Framework framework)</span> </span>&#123;<span class="keyword">this</span>.framework = framework;&#125;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span></span>&#123;...&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//车架类(添加bottom属性的setter方法)</span></span><br><span class="line">Class Framework&#123;</span><br><span class="line">  <span class="keyword">private</span> Bottom bottom;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setBottom</span><span class="params">(Bottom bottom)</span></span>&#123;<span class="keyword">this</span>.bottom = bottom;&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//底盘类(添加Tire属性的setter方法)</span></span><br><span class="line">Class Bottom&#123;</span><br><span class="line">  <span class="keyword">private</span> Tire tire;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setTire</span><span class="params">(Tire tire)</span></span>&#123;<span class="keyword">this</span>.tire = tire;&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//轮胎类</span></span><br><span class="line">Class Tire&#123;</span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">int</span> size;</span><br><span class="line">  Tire()&#123;<span class="keyword">this</span>.size = <span class="number">10</span>;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>业务类</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//setter注入与构造器方法类似</span></span><br><span class="line">Tire tire = <span class="keyword">new</span> Tire(<span class="number">40</span>);</span><br><span class="line">Bottom bottom = <span class="keyword">new</span> Bottom();</span><br><span class="line">bottom.setTire(tire);</span><br><span class="line">Framework framework = <span class="keyword">new</span> Framework();</span><br><span class="line">framework.setBottom(bottom);</span><br><span class="line">Car car = <span class="keyword">new</span> Car();</span><br><span class="line">car.setFramework(framework);</span><br><span class="line">car.run();</span><br></pre></td></tr></table></figure>
+
+<p><strong>下面举一个接口注入的例子</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//person类</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span></span>&#123;</span><br><span class="line">  <span class="keyword">private</span> BenzCar myBenz;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="title">setMyBenz</span><span class="params">(BenzCar myBenz)</span> </span>&#123;<span class="keyword">this</span>.myBenz = myBenz;&#125;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">driveBenz</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.myBenz.run()</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//BenzCar类</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BenzCar</span></span>&#123;</span><br><span class="line">  <span class="keyword">private</span> String name = <span class="string">&quot;Benz&quot;</span>;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    System.Out.Println(<span class="keyword">this</span>.name + <span class="string">&quot; is running&quot;</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//人驾驶奔驰</span></span><br><span class="line">Person ps = <span class="keyword">new</span> Person();</span><br><span class="line">ps.setMyBenz(<span class="keyword">new</span> BenzCar())</span><br><span class="line">ps.driveBenz()</span><br></pre></td></tr></table></figure>
+
+<p>上述例子Person类依赖BenzCar类，当需求增加人驾驶宝马车，则不仅要添加宝马类，还要对Person类修改，上述代码则变为：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//person类</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span></span>&#123;</span><br><span class="line">  <span class="keyword">private</span> BenzCar myBenz;</span><br><span class="line">  <span class="keyword">private</span> BMWCar myBMW;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="title">setMyBenz</span><span class="params">(BenzCar myBenz)</span> </span>&#123;<span class="keyword">this</span>.myBenz = myBenz;&#125;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="title">setMyBMW</span><span class="params">(BMWCar myBMW)</span> </span>&#123;<span class="keyword">this</span>.myBMW = myBMW;&#125;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">driveBenz</span> <span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.myBenz.run()</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">driveBMW</span> <span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.myBMW.run()</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//BenzCar类</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BenzCar</span></span>&#123;</span><br><span class="line">  <span class="keyword">private</span> String name = <span class="string">&quot;Benz&quot;</span>;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    System.Out.Println(<span class="keyword">this</span>.name + <span class="string">&quot; is running&quot;</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//BMWCar类</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BMWCar</span></span>&#123;</span><br><span class="line">  <span class="keyword">private</span> String name = <span class="string">&quot;BMW&quot;</span>;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    System.out.println(<span class="keyword">this</span>.name + <span class="string">&quot; is running&quot;</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//人驾驶宝马</span></span><br><span class="line">Person ps = <span class="keyword">new</span> Person();</span><br><span class="line">ps.setMyBMW(<span class="keyword">new</span> BMWCar())</span><br><span class="line">ps.driveBMW()</span><br></pre></td></tr></table></figure>
+
+<p>上述设计每次新增一个汽车类型，都要重新修改Person代码，违反了开闭原则、依赖倒置原则。下面使用<strong>接口注入</strong>方法进行重构：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//定义Car接口</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Car</span></span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//BenzCar类实现Car接口</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BenzCar</span> <span class="keyword">implements</span> <span class="title">Car</span> </span>&#123;</span><br><span class="line">  <span class="keyword">private</span> String name;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="title">BenzCar</span><span class="params">(String name)</span> </span>&#123;<span class="keyword">this</span>.name = name;&#125;</span><br><span class="line">  <span class="meta">@Override</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">   System.out.println(<span class="keyword">this</span>.name + <span class="string">&quot;is running&quot;</span>); </span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//BMWCar类实现Car接口</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BMWCar</span> <span class="keyword">implements</span> <span class="title">Car</span> </span>&#123;</span><br><span class="line">  <span class="keyword">private</span> String name;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="title">BMWCar</span><span class="params">(String name)</span> </span>&#123;<span class="keyword">this</span>.name = name;&#125;</span><br><span class="line">  <span class="meta">@Override</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">   System.out.println(<span class="keyword">this</span>.name + <span class="string">&quot;is running&quot;</span>); </span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//Person类针对接口编程</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span> </span>&#123;</span><br><span class="line">   <span class="keyword">private</span> Car car;</span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="title">setCar</span><span class="params">(Car car)</span> </span>&#123;<span class="keyword">this</span>.car = car;&#125;</span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">drive</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.car.run()</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//业务调用</span></span><br><span class="line">Person ps1 = <span class="keyword">new</span> Person();</span><br><span class="line">Person ps2 = <span class="keyword">new</span> Person();</span><br><span class="line"><span class="comment">//人驾驶奔驰</span></span><br><span class="line">Car benzCar = <span class="keyword">new</span> BenzCar(myBenz);</span><br><span class="line">ps1.setCar(benzCar);</span><br><span class="line">ps1.drive();</span><br><span class="line"><span class="comment">//人驾驶宝马</span></span><br><span class="line">Car bmwCar = <span class="keyword">new</span> BMWCar(myBMW);</span><br><span class="line">ps2.setCar(bmwCar);</span><br><span class="line">ps2.drive();</span><br></pre></td></tr></table></figure>
+
+<p>Person类针对Car接口进行编程，当业务增加了新的车型时，只需要对Car接口进行实现即可，无需修改原有代码，减少了维护的成本。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://mayeeeeeeee.github.io/2020/08/08/Explain%E8%AF%A6%E8%A7%A3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/blog/images/avatar.png">
+      <meta itemprop="name" content="zhiwen">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="zhiwen' Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/blog/2020/08/08/Explain%E8%AF%A6%E8%A7%A3/" class="post-title-link" itemprop="url">Explain详解</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-08-08 17:08:58 / 修改时间：23:54:33" itemprop="dateCreated datePublished" datetime="2020-08-08T17:08:58+08:00">2020-08-08</time>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>2.6k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>4 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="Explain中的列"><a href="#Explain中的列" class="headerlink" title="Explain中的列"></a>Explain中的列</h3><ul>
+<li><p><strong>id</strong></p>
+<p>id列的编号是 select 的序列号，id值越大表示该select越先执行，id相同顺序执行。</p>
+</li>
+<li><p><strong>select_type</strong></p>
+<ol>
+<li><p><strong>simple</strong>: 简单查询。查询不包含子查询和union</p>
+</li>
+<li><p><strong>primary</strong>: 主查询。即最外层select</p>
+</li>
+<li><p><strong>subquery</strong>: 子查询（相对于主查询），主查询select中的查询（不在from中)。</p>
+</li>
+<li><p><strong>derived</strong>: 衍生查询（相对于主查询），主查询from中的查询。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">explain</span> <span class="keyword">select</span> (<span class="keyword">select</span> <span class="number">1</span> <span class="keyword">from</span> actor <span class="keyword">where</span> <span class="keyword">id</span> = <span class="number">1</span>) <span class="keyword">from</span> (<span class="keyword">select</span> * <span class="keyword">from</span> film <span class="keyword">where</span> <span class="keyword">id</span> = <span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+
+<p><img src="/blog/2020/08/08/Explain%E8%AF%A6%E8%A7%A3/select_type.png" alt="image-20200725123609130"></p>
+</li>
+<li><p><strong>union</strong>: 在 union 中的第二个和随后的 select</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">explain</span> <span class="keyword">select</span> <span class="number">1</span> <span class="keyword">union</span> <span class="keyword">all</span> <span class="keyword">select</span> <span class="number">1</span>;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/blog/2020/08/08/Explain%E8%AF%A6%E8%A7%A3/select_type_union.png" alt="image-20200725124107619"></p>
+</li>
+</ol>
+</li>
+<li><p><strong>type</strong></p>
+<p><strong>system &gt; const &gt; eq_ref &gt; ref &gt; range &gt; index &gt; ALL</strong></p>
+<ol>
+<li><p><strong>Null</strong>: mysql能够在优化阶段分解查询语句，在执行阶段用不着再访问表或索引。例如：在索引列中选取最小值，可以单独查找索引来完成，不需要在执行时访问表。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">explain</span> <span class="keyword">select</span> <span class="keyword">min</span>(<span class="keyword">id</span>) <span class="keyword">from</span> film;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/blog/2020/08/08/Explain%E8%AF%A6%E8%A7%A3/type_Null.png" alt="image-20200725125428161"></p>
+</li>
+<li><p><strong>system</strong>: 表里只有一行记录  </p>
+</li>
+<li><p><strong>const</strong>: primary key 或 unique key 的所有列与常数比较时，表最多有一个匹配行</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">explain</span> <span class="keyword">extended</span> <span class="keyword">select</span> * <span class="keyword">from</span> (<span class="keyword">select</span> * <span class="keyword">from</span> film <span class="keyword">where</span> <span class="keyword">id</span> = <span class="number">1</span>) tmp;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/blog/2020/08/08/Explain%E8%AF%A6%E8%A7%A3/type_const&system.png" alt="image-20200725130209724"></p>
+</li>
+<li><p><strong>eq_ref</strong>: 关联查询时，primary key 或 unique key 索引的所有部分被连接使用 ，最多只会返回一条符合条件的记录，==简单的 select 查询不会出现这种 type==。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">explain</span> <span class="keyword">select</span> * <span class="keyword">from</span> film_actor <span class="keyword">left</span> <span class="keyword">join</span> film <span class="keyword">on</span> film_actor.film_id = film.id;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/blog/2020/08/08/Explain%E8%AF%A6%E8%A7%A3/type_eq_ref.png" alt="image-20200725131337441"></p>
+</li>
+<li><p><strong>ref</strong>: 不使用唯一索引(使用普通索引或唯一索引的部分前缀)，可能返回多条记录。</p>
+<p>简单查询（name为普通索引）：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">explain</span> <span class="keyword">select</span> * <span class="keyword">from</span> film <span class="keyword">where</span> <span class="keyword">name</span> = <span class="string">&#x27;film1&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/blog/2020/08/08/Explain%E8%AF%A6%E8%A7%A3/type_ref.png" alt="image-20200725131909090"></p>
+<p>关联表查询(idx_film_actor_id是film_id和actor_id的联合索引，只用到前缀film_id)：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">explain</span> <span class="keyword">select</span> film_id <span class="keyword">from</span> film <span class="keyword">left</span> <span class="keyword">join</span> film_actor <span class="keyword">on</span> film.id = film_actor.film_id;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/blog/2020/08/08/Explain%E8%AF%A6%E8%A7%A3/type_ref2.png" alt="image-20200725132053796"></p>
+</li>
+<li><p><strong>range</strong>: 范围查找，范围扫描通常出现在 in(), between ,&gt; ,&lt;, &gt;= 等操作中，被检索行使用索引。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">explain</span> <span class="keyword">select</span> * <span class="keyword">from</span> actor <span class="keyword">where</span> <span class="keyword">id</span> &gt; <span class="number">1</span>;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/blog/2020/08/08/Explain%E8%AF%A6%E8%A7%A3/type_range.png" alt="image-20200725132452486"></p>
+</li>
+<li><p><strong>index</strong>: 查询全表时，若辅助索引树中包含所有查询字段，则去辅助索引中查询所有索引（数据量较少），称之为覆盖索引(Full Index Scan)。用到索引，但是只是遍历索引(叶子)，效率低。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">explain</span> <span class="keyword">select</span> * <span class="keyword">from</span> film;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/blog/2020/08/08/Explain%E8%AF%A6%E8%A7%A3/type_index.png" alt="image-20200725133604417"></p>
+</li>
+<li><p><strong>All</strong>: 全表扫描，扫描聚簇索引，遍历聚簇索引的叶子。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">explain</span> <span class="keyword">select</span> * <span class="keyword">from</span> actor;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/blog/2020/08/08/Explain%E8%AF%A6%E8%A7%A3/type_ALl.png" alt="image-20200725134347648"></p>
+</li>
+</ol>
+</li>
+<li><p><strong>possible_keys</strong></p>
+<p>可能使用的索引。explain 时可能出现 possible_keys 有列，而 key 显示 NULL 的情况，这种情况是因为表中数据不多，mysql认为索引对此查询帮助不大，选择了全表查询。</p>
+</li>
+<li><p><strong>key列</strong></p>
+<p>这一列显示mysql实际采用哪个索引来优化对该表的访问。</p>
+</li>
+<li><p><strong>key_len</strong></p>
+<p>使用索引的字节总数，通过这个值可以算出具体使用了(联合)索引中的哪些列。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">explain</span> <span class="keyword">select</span> * <span class="keyword">from</span> film_actor <span class="keyword">where</span> film_id = <span class="number">2</span>;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/blog/2020/08/08/Explain%E8%AF%A6%E8%A7%A3/mysql_%E8%81%94%E5%90%88%E7%B4%A2%E5%BC%95.png" alt="image-20200725135045988"></p>
+<p>film_actor的联合索引 idx_film_actor_id 由 film_id 和 actor_id 两个int列组成，并且每个int是4字节。通过结果中的key_len=4可推断出查询使用了第一个列：film_id列来执行索引查找。</p>
+<ol>
+<li><p><strong>计算规则</strong></p>
+<p><strong>字符串</strong>：</p>
+<p>​    char(n)：n字节长度</p>
+<p>​    varchar(n)：如果是utf-8，则长度 3n + 2 字节，加的2字节用来存储字符串长度</p>
+<p><strong>数值类型</strong>：</p>
+<p>​    tinyint：1字节</p>
+<p>​    smallint：2字节</p>
+<p>​    int：4字节</p>
+<p>​    bigint：8字节　　</p>
+<p><strong>时间类型</strong>：</p>
+<p>​    date：3字节</p>
+<p>​    timestamp：4字节</p>
+<p>​    datetime：8字节</p>
+<p>如果字段允许为 NULL，需要1字节记录是否为 NULL</p>
+</li>
+</ol>
+</li>
+<li><p><strong>ref</strong></p>
+<p>这一列显示了在key列记录的索引中，表查找值所用到的列或常量，常见的有：const（常量），字段名（例：film.id）</p>
+</li>
+<li><p><strong>rows</strong></p>
+<p>这一列是mysql估计要读取并检测的行数，注意这个不是结果集里的行数。</p>
+</li>
+<li><p><strong>Extra</strong></p>
+<p>这一列展示的是额外信息。常见的重要值如下：</p>
+<ol>
+<li><p><strong>Using index</strong>: 使用覆盖索引(结果集在辅助索引树中全部包含)</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">explain</span> <span class="keyword">select</span> film_id <span class="keyword">from</span> film_actor <span class="keyword">where</span> film_id = <span class="number">1</span>;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/blog/2020/08/08/Explain%E8%AF%A6%E8%A7%A3/Extra.png" alt="image-20200725140417461"></p>
+<p>问题：为什么这个type不是index而是ref？</p>
+<p>答：因为这个查询的不是全表数据。</p>
+</li>
+<li><p><strong>Using where</strong>: 表示MySQL服务器在存储引擎收到记录后进行“后过滤”（Post-filter）,如果查询未能使用索引，Using where的作用只是提醒我们==MySQL将用where子句来过滤结果集==。这个==一般发生在MySQL服务器，而不是存储引擎层==。一般发生在不能走索引扫描的情况下或者走索引扫描，但是有些查询条件不在索引当中的情况下。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; explain select * from actor where name = &#x27;a&#x27;;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/blog/2020/08/08/Explain%E8%AF%A6%E8%A7%A3/Extra_Using_where.png" alt="image-20200725141016636"></p>
+</li>
+<li><p><strong>Using index condition</strong>: 查询的列不完全被索引覆盖，where条件中是一个前导列的范围；</p>
+</li>
+<li><p><strong>Using temporary</strong>: 用到临时表</p>
+</li>
+<li><p><strong>Using filesort</strong>:  MySQL中无法利用索引完成的排序操作称为“文件排序”</p>
+</li>
+<li><p><strong>Select tables optimized away</strong>: 使用某些聚合函数（比如 max、min）来访问存在索引的某个字段.</p>
+</li>
+</ol>
+</li>
+</ul>
+<p><a target="_blank" rel="noopener" href="http://fivezh.github.io/2020/01/19/mysql-icp/?utm_source=tuicool&amp;utm_medium=referral">http://fivezh.github.io/2020/01/19/mysql-icp/?utm_source=tuicool&amp;utm_medium=referral</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/kerrycode/p/9909093.html">https://www.cnblogs.com/kerrycode/p/9909093.html</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://mayeeeeeeee.github.io/2020/08/08/MySQL%E9%94%81%E4%B8%8E%E4%BA%8B%E5%8A%A1/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -192,7 +537,7 @@
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Wangerous' Blog">
+      <meta itemprop="name" content="zhiwen' Blog">
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
@@ -208,10 +553,24 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2020-08-08 17:08:58 / 修改时间：18:10:06" itemprop="dateCreated datePublished" datetime="2020-08-08T17:08:58+08:00">2020-08-08</time>
+              <time title="创建时间：2020-08-08 17:08:58 / 修改时间：23:52:09" itemprop="dateCreated datePublished" datetime="2020-08-08T17:08:58+08:00">2020-08-08</time>
             </span>
 
-          
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>4.3k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>7 分钟</span>
+            </span>
 
         </div>
       </header>
@@ -507,7 +866,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://mayeeeeeeee.github.io/2020/07/25/Explain%E8%AF%A6%E8%A7%A3/">
+    <link itemprop="mainEntityOfPage" href="https://mayeeeeeeee.github.io/2020/08/05/Git%E5%AD%A6%E4%B9%A0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/blog/images/avatar.png">
@@ -516,12 +875,12 @@
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Wangerous' Blog">
+      <meta itemprop="name" content="zhiwen' Blog">
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/blog/2020/07/25/Explain%E8%AF%A6%E8%A7%A3/" class="post-title-link" itemprop="url">未命名</a>
+            <a href="/blog/2020/08/05/Git%E5%AD%A6%E4%B9%A0/" class="post-title-link" itemprop="url">常用Git命令</a>
         </h2>
 
         <div class="post-meta">
@@ -531,534 +890,31 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-07-25 12:14:42" itemprop="dateCreated datePublished" datetime="2020-07-25T12:14:42+08:00">2020-07-25</time>
+              <time title="创建时间：2020-08-05 14:09:58" itemprop="dateCreated datePublished" datetime="2020-08-05T14:09:58+08:00">2020-08-05</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-08-08 21:39:44" itemprop="dateModified" datetime="2020-08-08T21:39:44+08:00">2020-08-08</time>
+                <time title="修改时间：2020-08-09 00:14:12" itemprop="dateModified" datetime="2020-08-09T00:14:12+08:00">2020-08-09</time>
               </span>
 
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="Explain中的列"><a href="#Explain中的列" class="headerlink" title="Explain中的列"></a>Explain中的列</h3><ul>
-<li><p><strong>id</strong></p>
-<p>id列的编号是 select 的序列号，id值越大表示该select越先执行，id相同顺序执行。</p>
-</li>
-<li><p><strong>select_type</strong></p>
-<ol>
-<li><p><strong>simple</strong>: 简单查询。查询不包含子查询和union</p>
-</li>
-<li><p><strong>primary</strong>: 主查询。即最外层select</p>
-</li>
-<li><p><strong>subquery</strong>: 子查询（相对于主查询），主查询select中的查询（不在from中)。</p>
-</li>
-<li><p><strong>derived</strong>: 衍生查询（相对于主查询），主查询from中的查询。</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">explain</span> <span class="keyword">select</span> (<span class="keyword">select</span> <span class="number">1</span> <span class="keyword">from</span> actor <span class="keyword">where</span> <span class="keyword">id</span> = <span class="number">1</span>) <span class="keyword">from</span> (<span class="keyword">select</span> * <span class="keyword">from</span> film <span class="keyword">where</span> <span class="keyword">id</span> = <span class="number">1</span>)</span><br></pre></td></tr></table></figure>
-
-<p><img src="/blog/2020/07/25/Explain%E8%AF%A6%E8%A7%A3/select_type.png" alt="image-20200725123609130"></p>
-</li>
-<li><p><strong>union</strong>: 在 union 中的第二个和随后的 select</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">explain</span> <span class="keyword">select</span> <span class="number">1</span> <span class="keyword">union</span> <span class="keyword">all</span> <span class="keyword">select</span> <span class="number">1</span>;</span><br></pre></td></tr></table></figure>
-
-<p><img src="/blog/2020/07/25/Explain%E8%AF%A6%E8%A7%A3/select_type_union.png" alt="image-20200725124107619"></p>
-</li>
-</ol>
-</li>
-<li><p><strong>type</strong></p>
-<p><strong>system &gt; const &gt; eq_ref &gt; ref &gt; range &gt; index &gt; ALL</strong></p>
-<ol>
-<li><p><strong>Null</strong>: mysql能够在优化阶段分解查询语句，在执行阶段用不着再访问表或索引。例如：在索引列中选取最小值，可以单独查找索引来完成，不需要在执行时访问表。</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">explain</span> <span class="keyword">select</span> <span class="keyword">min</span>(<span class="keyword">id</span>) <span class="keyword">from</span> film;</span><br></pre></td></tr></table></figure>
-
-<p><img src="/blog/2020/07/25/Explain%E8%AF%A6%E8%A7%A3/type_Null.png" alt="image-20200725125428161"></p>
-</li>
-<li><p><strong>system</strong>: 表里只有一行记录  </p>
-</li>
-<li><p><strong>const</strong>: primary key 或 unique key 的所有列与常数比较时，表最多有一个匹配行</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">explain</span> <span class="keyword">extended</span> <span class="keyword">select</span> * <span class="keyword">from</span> (<span class="keyword">select</span> * <span class="keyword">from</span> film <span class="keyword">where</span> <span class="keyword">id</span> = <span class="number">1</span>) tmp;</span><br></pre></td></tr></table></figure>
-
-<p><img src="/blog/2020/07/25/Explain%E8%AF%A6%E8%A7%A3/type_const&system.png" alt="image-20200725130209724"></p>
-</li>
-<li><p><strong>eq_ref</strong>: 关联查询时，primary key 或 unique key 索引的所有部分被连接使用 ，最多只会返回一条符合条件的记录，==简单的 select 查询不会出现这种 type==。</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">explain</span> <span class="keyword">select</span> * <span class="keyword">from</span> film_actor <span class="keyword">left</span> <span class="keyword">join</span> film <span class="keyword">on</span> film_actor.film_id = film.id;</span><br></pre></td></tr></table></figure>
-
-<p><img src="/blog/2020/07/25/Explain%E8%AF%A6%E8%A7%A3/type_eq_ref.png" alt="image-20200725131337441"></p>
-</li>
-<li><p><strong>ref</strong>: 不使用唯一索引(使用普通索引或唯一索引的部分前缀)，可能返回多条记录。</p>
-<p>简单查询（name为普通索引）：</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">explain</span> <span class="keyword">select</span> * <span class="keyword">from</span> film <span class="keyword">where</span> <span class="keyword">name</span> = <span class="string">&#x27;film1&#x27;</span>;</span><br></pre></td></tr></table></figure>
-
-<p><img src="/blog/2020/07/25/Explain%E8%AF%A6%E8%A7%A3/type_ref.png" alt="image-20200725131909090"></p>
-<p>关联表查询(idx_film_actor_id是film_id和actor_id的联合索引，只用到前缀film_id)：</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">explain</span> <span class="keyword">select</span> film_id <span class="keyword">from</span> film <span class="keyword">left</span> <span class="keyword">join</span> film_actor <span class="keyword">on</span> film.id = film_actor.film_id;</span><br></pre></td></tr></table></figure>
-
-<p><img src="/blog/2020/07/25/Explain%E8%AF%A6%E8%A7%A3/type_ref2.png" alt="image-20200725132053796"></p>
-</li>
-<li><p><strong>range</strong>: 范围查找，范围扫描通常出现在 in(), between ,&gt; ,&lt;, &gt;= 等操作中，被检索行使用索引。</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">explain</span> <span class="keyword">select</span> * <span class="keyword">from</span> actor <span class="keyword">where</span> <span class="keyword">id</span> &gt; <span class="number">1</span>;</span><br></pre></td></tr></table></figure>
-
-<p><img src="/blog/2020/07/25/Explain%E8%AF%A6%E8%A7%A3/type_range.png" alt="image-20200725132452486"></p>
-</li>
-<li><p><strong>index</strong>: 查询全表时，若辅助索引树中包含所有查询字段，则去辅助索引中查询所有索引（数据量较少），称之为覆盖索引(Full Index Scan)。用到索引，但是只是遍历索引(叶子)，效率低。</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">explain</span> <span class="keyword">select</span> * <span class="keyword">from</span> film;</span><br></pre></td></tr></table></figure>
-
-<p><img src="/blog/2020/07/25/Explain%E8%AF%A6%E8%A7%A3/type_index.png" alt="image-20200725133604417"></p>
-</li>
-<li><p><strong>All</strong>: 全表扫描，扫描聚簇索引，遍历聚簇索引的叶子。</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">explain</span> <span class="keyword">select</span> * <span class="keyword">from</span> actor;</span><br></pre></td></tr></table></figure>
-
-<p><img src="/blog/2020/07/25/Explain%E8%AF%A6%E8%A7%A3/type_ALl.png" alt="image-20200725134347648"></p>
-</li>
-</ol>
-</li>
-<li><p><strong>possible_keys</strong></p>
-<p>可能使用的索引。explain 时可能出现 possible_keys 有列，而 key 显示 NULL 的情况，这种情况是因为表中数据不多，mysql认为索引对此查询帮助不大，选择了全表查询。</p>
-</li>
-<li><p><strong>key列</strong></p>
-<p>这一列显示mysql实际采用哪个索引来优化对该表的访问。</p>
-</li>
-<li><p><strong>key_len</strong></p>
-<p>使用索引的字节总数，通过这个值可以算出具体使用了(联合)索引中的哪些列。</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">explain</span> <span class="keyword">select</span> * <span class="keyword">from</span> film_actor <span class="keyword">where</span> film_id = <span class="number">2</span>;</span><br></pre></td></tr></table></figure>
-
-<p><img src="/blog/2020/07/25/Explain%E8%AF%A6%E8%A7%A3/mysql_%E8%81%94%E5%90%88%E7%B4%A2%E5%BC%95.png" alt="image-20200725135045988"></p>
-<p>film_actor的联合索引 idx_film_actor_id 由 film_id 和 actor_id 两个int列组成，并且每个int是4字节。通过结果中的key_len=4可推断出查询使用了第一个列：film_id列来执行索引查找。</p>
-<ol>
-<li><p><strong>计算规则</strong></p>
-<p><strong>字符串</strong>：</p>
-<p>​    char(n)：n字节长度</p>
-<p>​    varchar(n)：如果是utf-8，则长度 3n + 2 字节，加的2字节用来存储字符串长度</p>
-<p><strong>数值类型</strong>：</p>
-<p>​    tinyint：1字节</p>
-<p>​    smallint：2字节</p>
-<p>​    int：4字节</p>
-<p>​    bigint：8字节　　</p>
-<p><strong>时间类型</strong>：</p>
-<p>​    date：3字节</p>
-<p>​    timestamp：4字节</p>
-<p>​    datetime：8字节</p>
-<p>如果字段允许为 NULL，需要1字节记录是否为 NULL</p>
-</li>
-</ol>
-</li>
-<li><p><strong>ref</strong></p>
-<p>这一列显示了在key列记录的索引中，表查找值所用到的列或常量，常见的有：const（常量），字段名（例：film.id）</p>
-</li>
-<li><p><strong>rows</strong></p>
-<p>这一列是mysql估计要读取并检测的行数，注意这个不是结果集里的行数。</p>
-</li>
-<li><p><strong>Extra</strong></p>
-<p>这一列展示的是额外信息。常见的重要值如下：</p>
-<ol>
-<li><p><strong>Using index</strong>: 使用覆盖索引(结果集在辅助索引树中全部包含)</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">explain</span> <span class="keyword">select</span> film_id <span class="keyword">from</span> film_actor <span class="keyword">where</span> film_id = <span class="number">1</span>;</span><br></pre></td></tr></table></figure>
-
-<p><img src="/blog/2020/07/25/Explain%E8%AF%A6%E8%A7%A3/Extra.png" alt="image-20200725140417461"></p>
-<p>问题：为什么这个type不是index而是ref？</p>
-<p>答：因为这个查询的不是全表数据。</p>
-</li>
-<li><p><strong>Using where</strong>: 表示MySQL服务器在存储引擎收到记录后进行“后过滤”（Post-filter）,如果查询未能使用索引，Using where的作用只是提醒我们==MySQL将用where子句来过滤结果集==。这个==一般发生在MySQL服务器，而不是存储引擎层==。一般发生在不能走索引扫描的情况下或者走索引扫描，但是有些查询条件不在索引当中的情况下。</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; explain select * from actor where name = &#x27;a&#x27;;</span><br></pre></td></tr></table></figure>
-
-<p><img src="/blog/2020/07/25/Explain%E8%AF%A6%E8%A7%A3/Extra_Using_where.png" alt="image-20200725141016636"></p>
-</li>
-<li><p><strong>Using index condition</strong>: 查询的列不完全被索引覆盖，where条件中是一个前导列的范围；</p>
-</li>
-<li><p><strong>Using temporary</strong>: 用到临时表</p>
-</li>
-<li><p><strong>Using filesort</strong>:  MySQL中无法利用索引完成的排序操作称为“文件排序”</p>
-</li>
-<li><p><strong>Select tables optimized away</strong>: 使用某些聚合函数（比如 max、min）来访问存在索引的某个字段.</p>
-</li>
-</ol>
-</li>
-</ul>
-<p><a target="_blank" rel="noopener" href="http://fivezh.github.io/2020/01/19/mysql-icp/?utm_source=tuicool&amp;utm_medium=referral">http://fivezh.github.io/2020/01/19/mysql-icp/?utm_source=tuicool&amp;utm_medium=referral</a></p>
-<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/kerrycode/p/9909093.html">https://www.cnblogs.com/kerrycode/p/9909093.html</a></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://mayeeeeeeee.github.io/2020/07/23/Mysql%E7%B4%A2%E5%BC%95%E5%BA%95%E5%B1%82%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/blog/images/avatar.png">
-      <meta itemprop="name" content="zhiwen">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Wangerous' Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/blog/2020/07/23/Mysql%E7%B4%A2%E5%BC%95%E5%BA%95%E5%B1%82%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" class="post-title-link" itemprop="url">未命名</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
+          <br>
+            <span class="post-meta-item" title="本文字数">
               <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
+                <i class="far fa-file-word"></i>
               </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-07-23 20:47:20" itemprop="dateCreated datePublished" datetime="2020-07-23T20:47:20+08:00">2020-07-23</time>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>1.3k</span>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-08-08 21:21:21" itemprop="dateModified" datetime="2020-08-08T21:21:21+08:00">2020-08-08</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="什么是索引"><a href="#什么是索引" class="headerlink" title="什么是索引"></a>什么是索引</h3><p>索引是一种<strong>有序</strong>的数据结构。</p>
-<h3 id="索引数据结构"><a href="#索引数据结构" class="headerlink" title="索引数据结构"></a>索引数据结构</h3><ul>
-<li><p><strong>二叉树(二叉排序树)</strong></p>
-<p>极端情况退化为链表</p>
-</li>
-<li><p><strong>红黑树(二叉平衡树)</strong></p>
-<p>树的高度高(查找层数高)</p>
-</li>
-<li><p><strong>Hash表</strong></p>
-</li>
-<li><p><strong>B-Tree</strong></p>
-</li>
-</ul>
-<p>对于树形索引结构，查找次数等于树的高度。通常高度越低查找速度更快。</p>
-<p>B-Tree相比于二叉排序树（或二叉平衡树）的优势，每一个节点尽可能放多个索引（这里在节点内部为内存中查找，查找时间可以忽略），这样下一层可以有更多的节点，使得树的高度越小。</p>
-<p><strong>结论：存储相同的数据，每个节点存放的数据越多，整个树的高度越低，查找次数越少。</strong></p>
-<p><img src="/blog/2020/07/23/Mysql%E7%B4%A2%E5%BC%95%E5%BA%95%E5%B1%82%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/1.png" alt="B树"></p>
-<p>而Mysql真正选取的是一种优化的B-Tree —&gt; B+Tree。</p>
-<p>B+树与B树的区别：</p>
-<p><img src="/blog/2020/07/23/Mysql%E7%B4%A2%E5%BC%95%E5%BA%95%E5%B1%82%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/2.png" alt="image-20200724093626358"></p>
-<ol>
-<li><p>B+树只有叶子结点存放数据，非叶子结点只存索引。</p>
-<p>好处：非叶子结点只存在索引，会使每个非叶子结点存储更多的索引值，整个树的高度</p>
-</li>
-<li><p>B+树叶子结点之间存在指针，可以实现顺序访问。</p>
-</li>
-</ol>
-<h3 id="Mysql索引"><a href="#Mysql索引" class="headerlink" title="Mysql索引"></a>Mysql索引</h3><p>Mysql存储引擎常用InnoDB、MyISAM、是==针对表==而言的</p>
-<h4 id="MyISAM"><a href="#MyISAM" class="headerlink" title="MyISAM"></a>MyISAM</h4><p>索引结构：非聚集索引，主键索引与非主键结构相同</p>
-<p><img src="/blog/2020/07/23/Mysql%E7%B4%A2%E5%BC%95%E5%BA%95%E5%B1%82%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/3.png" alt="image-20200725103605551"></p>
-<p>MyISAM表文件</p>
-<ul>
-<li><p>${table_name}.frm 表结构文件</p>
-</li>
-<li><p>${table_name}.myd 表数据文件</p>
-</li>
-<li><p>${table_name}.myi 表索引文件</p>
-</li>
-</ul>
-<h4 id="InnoDB"><a href="#InnoDB" class="headerlink" title="InnoDB"></a>InnoDB</h4><p>索引结构：主键为聚集索引、非主键为非聚集索引（结构与MyISAM相同）</p>
-<ul>
-<li>主键(聚集)索引：</li>
-</ul>
-<p><img src="/blog/2020/07/23/Mysql%E7%B4%A2%E5%BC%95%E5%BA%95%E5%B1%82%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/4.png" alt="image-20200725104217001"></p>
-<ul>
-<li>非主键(索引)：</li>
-</ul>
-<p><img src="/blog/2020/07/23/Mysql%E7%B4%A2%E5%BC%95%E5%BA%95%E5%B1%82%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/5.png" alt="image-20200725110338861"></p>
-<p>​    非主键索引域存放主键值，查找时还需回表至聚集索引中(利用主键)查找数据。</p>
-<p>InnoDB表文件</p>
-<ul>
-<li>${table_name}.frm 表结构文件(高版本Mysql移除？)</li>
-<li>${table_name}.ibd 聚集索引</li>
-</ul>
-<h4 id="联合索引"><a href="#联合索引" class="headerlink" title="联合索引"></a>联合索引</h4><p><img src="/blog/2020/07/23/Mysql%E7%B4%A2%E5%BC%95%E5%BA%95%E5%B1%82%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/6.png" alt="image-20200725111618600"></p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> employees <span class="keyword">where</span> <span class="keyword">name</span> = <span class="string">&#x27;Bill&#x27;</span> <span class="keyword">and</span> age = <span class="number">31</span>;    <span class="comment">#走索引</span></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> employees <span class="keyword">where</span> age = <span class="string">&#x27;30&#x27;</span> <span class="keyword">and</span> <span class="keyword">position</span> = <span class="string">&#x27;dev&#x27;</span>;    <span class="comment">#不走索引</span></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> employees <span class="keyword">where</span> <span class="keyword">position</span> = <span class="string">&#x27;manager;&#x27;</span>    <span class="comment">#不走索引</span></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> employees <span class="keyword">where</span> age = <span class="string">&#x27;12&#x27;</span> <span class="keyword">and</span> <span class="keyword">position</span> = <span class="string">&#x27;manager&#x27;</span> <span class="keyword">and</span> <span class="keyword">name</span> = <span class="string">&#x27;Bill&#x27;</span>;    <span class="comment">#走索引</span></span><br></pre></td></tr></table></figure>
-
-
-
-<h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><ol>
-<li><p>为什么InnoDB推荐建一个整型自增主键？    </p>
-<p>答：索引查找过程需要比较大小，整型比较大小快；便于B+树的维护(插入)。</p>
-</li>
-<li><p>为什么Mysql不推荐用Hash索引(Mysql可选)？</p>
-<p>答：不支持范围查找</p>
-</li>
-<li><p>为什么InnoDB非主键索引不用聚集索引呢(索引中存放数据)？</p>
-<p>答：一致性和节省空间</p>
-</li>
-</ol>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://mayeeeeeeee.github.io/2020/07/21/IOC%E4%B8%8EDI/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/blog/images/avatar.png">
-      <meta itemprop="name" content="zhiwen">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Wangerous' Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/blog/2020/07/21/IOC%E4%B8%8EDI/" class="post-title-link" itemprop="url">未命名</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
+            <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
+                <i class="far fa-clock"></i>
               </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-07-21 11:03:14" itemprop="dateCreated datePublished" datetime="2020-07-21T11:03:14+08:00">2020-07-21</time>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>2 分钟</span>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-08-08 21:41:41" itemprop="dateModified" datetime="2020-08-08T21:41:41+08:00">2020-08-08</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>IOC即<strong>控制反转</strong>(Inversion of Control)，是<strong>依赖倒置原则</strong>(Dependency Inversion Principle，软件设计五大原则之一)一种代码设计的思路。具体实现方式为<strong>依赖注入</strong>(Dependency Injection, DI)。三者具体关系为：</p>
-<p>依赖倒置原则 –&gt; 控制反转(设计思路) –&gt; 依赖注入(具体实现思路)</p>
-<p><strong>何为依赖倒置原则？Robert C. Martin给出的定义如下：</strong></p>
-<blockquote>
-<p>高层模块不应该依赖于底层模块，二者都应该依赖于抽象</p>
-<p>抽象不应该依赖于细节，细节应该依赖于抽象</p>
-</blockquote>
-<p>术语较为晦涩难懂，举个栗子：</p>
-<p><img src="/blog/2020/07/21/IOC%E4%B8%8EDI/%E6%B1%BD%E8%BD%A6%E4%BE%9D%E8%B5%96%E8%BD%AE%E8%83%8E.png" alt="preview"></p>
-<p>当设计汽车时，先设计轮胎，然后底盘依赖设计好的轮胎进行设计，直至设计好整个汽车。而此时当轮胎需要变化时，地盘需要跟着变化进而适应轮胎的变化，进而整个汽车都需要变化。</p>
-<p>我们换一种思路</p>
-<p><img src="/blog/2020/07/21/IOC%E4%B8%8EDI/%E8%BD%AE%E8%83%8E%E4%BE%9D%E8%B5%96%E6%B1%BD%E8%BD%A6.png" alt="preview"></p>
-<p>如果先设计整个汽车概况，然后根据汽车概况设计车身，然后设计地盘、轮胎，此时整个依赖链条发生了反转，当轮胎发生变化时，只需要重新设计轮胎即可。<strong>这就是依赖反转的过程！</strong></p>
-<p><strong>下面用代码来说明:</strong></p>
-<p>实体类：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//汽车类(依赖车架)</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Car</span> </span>&#123;</span><br><span class="line">  <span class="keyword">private</span> Framework framework;<span class="comment">//车架</span></span><br><span class="line">  Car() &#123;<span class="keyword">this</span>.framework = <span class="keyword">new</span> framework();&#125;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span></span>&#123;...&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//车架类(依赖底盘)</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Framework</span></span>&#123;</span><br><span class="line">  <span class="keyword">private</span> Bottom bottom;</span><br><span class="line">  Framework()&#123;<span class="keyword">this</span>.bottom = <span class="keyword">new</span> Bottom();&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//底盘类(依赖轮胎)</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Bottom</span></span>&#123;</span><br><span class="line">  <span class="keyword">private</span> Tire tire;</span><br><span class="line">  Bottom()&#123;<span class="keyword">this</span>.tire = <span class="keyword">new</span> Tire();&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//轮胎类</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Tire</span></span>&#123;</span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">int</span> size;</span><br><span class="line">  Tire()&#123;<span class="keyword">this</span>.size = <span class="number">10</span>;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>业务类：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//实例化一个汽车对象, 并执行run方法</span></span><br><span class="line">Car car = <span class="keyword">new</span> Car();</span><br><span class="line">car.run();</span><br></pre></td></tr></table></figure>
-
-<p>此时依赖关系为Car -&gt; Framework -&gt; Bottom -&gt;Tire，若此时业务需求发生了变化，需自定义轮胎尺寸，即Tire类size属性根据参数初始化。则上述代码需要修改。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//首先修改轮胎类</span></span><br><span class="line">Class Tire&#123;</span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">int</span> size;</span><br><span class="line">  Tire(<span class="keyword">int</span> size)&#123;<span class="keyword">this</span>.size = size;&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//然后需要修改底盘类(依赖轮胎)</span></span><br><span class="line">Class Bottom&#123;</span><br><span class="line">  <span class="keyword">private</span> Tire tire;</span><br><span class="line">  Bottom(<span class="keyword">int</span> tireSize)&#123;<span class="keyword">this</span>.tire = <span class="keyword">new</span> Tire(tireSize);&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//进而修改车架类(依赖底盘)</span></span><br><span class="line">Class Framework&#123;</span><br><span class="line">  <span class="keyword">private</span> Bottom bottom;</span><br><span class="line">  Framework(<span class="keyword">int</span> tireSize)&#123;<span class="keyword">this</span>.bottom = <span class="keyword">new</span> Bottom(tireSize);&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//最后修改汽车类(依赖车架)</span></span><br><span class="line">Class Car &#123;</span><br><span class="line">  <span class="keyword">private</span> Framework framework;<span class="comment">//车架</span></span><br><span class="line">  Car(<span class="keyword">int</span> tireSize) &#123;<span class="keyword">this</span>.framework = <span class="keyword">new</span> Framework(tireSize);&#125;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span></span>&#123;...&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//实例化一个轮胎尺寸为30的汽车对象, 并执行run方法</span></span><br><span class="line">Car car = <span class="keyword">new</span> Car(<span class="number">30</span>);</span><br><span class="line">car.run();</span><br></pre></td></tr></table></figure>
-
-<p>这种高层依赖底层的依赖关系，底层模块发生变化，高层模块都要随之变化，可谓牵一发而动全身，维护成本极高。违反了依赖导致原则。要遵守依赖导致原则，达到控制反转，通常使用依赖注入的方式来实现，具体有<strong>构造方法注入</strong>、<strong>setter方法注入</strong>、<strong>接口注入</strong>三种实现方法，构造方法注入、setter方法注入适用于链式依赖关系（如本例）。接口注入适用于星型依赖关系。下面尝试使用构造方法注入、setter方法注入对本例进行改造。</p>
-<ul>
-<li><strong>构造方法注入</strong></li>
-</ul>
-<p>实体类改造</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//汽车类(构造时需注入Framework属性)</span></span><br><span class="line">Class Car &#123;</span><br><span class="line">  <span class="keyword">private</span> Framework framework;<span class="comment">//车架</span></span><br><span class="line">  Car(Framework framework) &#123;<span class="keyword">this</span>.framework = framework;&#125;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span></span>&#123;...&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//车架类(构造时需注入Bottom属性)</span></span><br><span class="line">Class Framework&#123;</span><br><span class="line">  <span class="keyword">private</span> Bottom bottom;</span><br><span class="line">  Framework(Bottom bottom)&#123;<span class="keyword">this</span>.bottom = bottom;&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//底盘类(构造时需注入tire属性)</span></span><br><span class="line">Class Bottom&#123;</span><br><span class="line">  <span class="keyword">private</span> Tire tire;</span><br><span class="line">  Bottom(Tire tire)&#123;<span class="keyword">this</span>.tire = tire;&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//轮胎类</span></span><br><span class="line">Class Tire&#123;</span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">int</span> size;</span><br><span class="line">  Tire()&#123;<span class="keyword">this</span>.size = <span class="number">10</span>;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>业务类</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">    构造Car对象需要注入Framework对象，构造Framework对象需要注入Bottom对象，构造Bottom对象需要Tire对象，所以要先构造底层Tire对象，逐步向高层注入。进而实现了控制反转。</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line">Tire tire = <span class="keyword">new</span> Tire(<span class="number">40</span>);</span><br><span class="line">Bottom bottom = <span class="keyword">new</span> Bottom(tire);</span><br><span class="line">Framework framework = <span class="keyword">new</span> Framework(bottom);</span><br><span class="line">Car car = <span class="keyword">new</span> Car(framework);</span><br><span class="line">car.run();</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><strong>Setter方法注入</strong></li>
-</ul>
-<p>实体类改造</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//汽车类(添加framework属性的setter方法)</span></span><br><span class="line">Class Car &#123;</span><br><span class="line">  <span class="keyword">private</span> Framework framework;<span class="comment">//车架</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setFramework</span><span class="params">(Framework framework)</span> </span>&#123;<span class="keyword">this</span>.framework = framework;&#125;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span></span>&#123;...&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//车架类(添加bottom属性的setter方法)</span></span><br><span class="line">Class Framework&#123;</span><br><span class="line">  <span class="keyword">private</span> Bottom bottom;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setBottom</span><span class="params">(Bottom bottom)</span></span>&#123;<span class="keyword">this</span>.bottom = bottom;&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//底盘类(添加Tire属性的setter方法)</span></span><br><span class="line">Class Bottom&#123;</span><br><span class="line">  <span class="keyword">private</span> Tire tire;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setTire</span><span class="params">(Tire tire)</span></span>&#123;<span class="keyword">this</span>.tire = tire;&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//轮胎类</span></span><br><span class="line">Class Tire&#123;</span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">int</span> size;</span><br><span class="line">  Tire()&#123;<span class="keyword">this</span>.size = <span class="number">10</span>;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>业务类</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//setter注入与构造器方法类似</span></span><br><span class="line">Tire tire = <span class="keyword">new</span> Tire(<span class="number">40</span>);</span><br><span class="line">Bottom bottom = <span class="keyword">new</span> Bottom();</span><br><span class="line">bottom.setTire(tire);</span><br><span class="line">Framework framework = <span class="keyword">new</span> Framework();</span><br><span class="line">framework.setBottom(bottom);</span><br><span class="line">Car car = <span class="keyword">new</span> Car();</span><br><span class="line">car.setFramework(framework);</span><br><span class="line">car.run();</span><br></pre></td></tr></table></figure>
-
-<p><strong>下面举一个接口注入的例子</strong></p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//person类</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span></span>&#123;</span><br><span class="line">  <span class="keyword">private</span> BenzCar myBenz;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="title">setMyBenz</span><span class="params">(BenzCar myBenz)</span> </span>&#123;<span class="keyword">this</span>.myBenz = myBenz;&#125;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">driveBenz</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.myBenz.run()</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//BenzCar类</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BenzCar</span></span>&#123;</span><br><span class="line">  <span class="keyword">private</span> String name = <span class="string">&quot;Benz&quot;</span>;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    System.Out.Println(<span class="keyword">this</span>.name + <span class="string">&quot; is running&quot;</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//人驾驶奔驰</span></span><br><span class="line">Person ps = <span class="keyword">new</span> Person();</span><br><span class="line">ps.setMyBenz(<span class="keyword">new</span> BenzCar())</span><br><span class="line">ps.driveBenz()</span><br></pre></td></tr></table></figure>
-
-<p>上述例子Person类依赖BenzCar类，当需求增加人驾驶宝马车，则不仅要添加宝马类，还要对Person类修改，上述代码则变为：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//person类</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span></span>&#123;</span><br><span class="line">  <span class="keyword">private</span> BenzCar myBenz;</span><br><span class="line">  <span class="keyword">private</span> BMWCar myBMW;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="title">setMyBenz</span><span class="params">(BenzCar myBenz)</span> </span>&#123;<span class="keyword">this</span>.myBenz = myBenz;&#125;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="title">setMyBMW</span><span class="params">(BMWCar myBMW)</span> </span>&#123;<span class="keyword">this</span>.myBMW = myBMW;&#125;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">driveBenz</span> <span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.myBenz.run()</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">driveBMW</span> <span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.myBMW.run()</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//BenzCar类</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BenzCar</span></span>&#123;</span><br><span class="line">  <span class="keyword">private</span> String name = <span class="string">&quot;Benz&quot;</span>;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    System.Out.Println(<span class="keyword">this</span>.name + <span class="string">&quot; is running&quot;</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//BMWCar类</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BMWCar</span></span>&#123;</span><br><span class="line">  <span class="keyword">private</span> String name = <span class="string">&quot;BMW&quot;</span>;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    System.out.println(<span class="keyword">this</span>.name + <span class="string">&quot; is running&quot;</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//人驾驶宝马</span></span><br><span class="line">Person ps = <span class="keyword">new</span> Person();</span><br><span class="line">ps.setMyBMW(<span class="keyword">new</span> BMWCar())</span><br><span class="line">ps.driveBMW()</span><br></pre></td></tr></table></figure>
-
-<p>上述设计每次新增一个汽车类型，都要重新修改Person代码，违反了开闭原则、依赖倒置原则。下面使用<strong>接口注入</strong>方法进行重构：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//定义Car接口</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Car</span></span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//BenzCar类实现Car接口</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BenzCar</span> <span class="keyword">implements</span> <span class="title">Car</span> </span>&#123;</span><br><span class="line">  <span class="keyword">private</span> String name;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="title">BenzCar</span><span class="params">(String name)</span> </span>&#123;<span class="keyword">this</span>.name = name;&#125;</span><br><span class="line">  <span class="meta">@Override</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">   System.out.println(<span class="keyword">this</span>.name + <span class="string">&quot;is running&quot;</span>); </span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//BMWCar类实现Car接口</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BMWCar</span> <span class="keyword">implements</span> <span class="title">Car</span> </span>&#123;</span><br><span class="line">  <span class="keyword">private</span> String name;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="title">BMWCar</span><span class="params">(String name)</span> </span>&#123;<span class="keyword">this</span>.name = name;&#125;</span><br><span class="line">  <span class="meta">@Override</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">   System.out.println(<span class="keyword">this</span>.name + <span class="string">&quot;is running&quot;</span>); </span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//Person类针对接口编程</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span> </span>&#123;</span><br><span class="line">   <span class="keyword">private</span> Car car;</span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="title">setCar</span><span class="params">(Car car)</span> </span>&#123;<span class="keyword">this</span>.car = car;&#125;</span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">drive</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.car.run()</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//业务调用</span></span><br><span class="line">Person ps1 = <span class="keyword">new</span> Person();</span><br><span class="line">Person ps2 = <span class="keyword">new</span> Person();</span><br><span class="line"><span class="comment">//人驾驶奔驰</span></span><br><span class="line">Car benzCar = <span class="keyword">new</span> BenzCar(myBenz);</span><br><span class="line">ps1.setCar(benzCar);</span><br><span class="line">ps1.drive();</span><br><span class="line"><span class="comment">//人驾驶宝马</span></span><br><span class="line">Car bmwCar = <span class="keyword">new</span> BMWCar(myBMW);</span><br><span class="line">ps2.setCar(bmwCar);</span><br><span class="line">ps2.drive();</span><br></pre></td></tr></table></figure>
-
-<p>Person类针对Car接口进行编程，当业务增加了新的车型时，只需要对Car接口进行实现即可，无需修改原有代码，减少了维护的成本。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://mayeeeeeeee.github.io/2020/07/15/Mockito%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/blog/images/avatar.png">
-      <meta itemprop="name" content="zhiwen">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Wangerous' Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/blog/2020/07/15/Mockito%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95/" class="post-title-link" itemprop="url">未命名</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-07-15 09:31:20" itemprop="dateCreated datePublished" datetime="2020-07-15T09:31:20+08:00">2020-07-15</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-07-17 16:00:39" itemprop="dateModified" datetime="2020-07-17T16:00:39+08:00">2020-07-17</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">set(String s, List l, <span class="keyword">long</span>, l)</span><br><span class="line">doNothing().when(redisDao).set(Mockito.anyString(), Mockito.anyObject(), Mockito.anyLong(  <span class="comment">//不报异常</span></span><br><span class="line">  </span><br><span class="line">doNothing().when(redisDao).set(Mockito.anyString(), Mockito.anyList(), Mockito.anyLong());   <span class="comment">//报异常</span></span><br></pre></td></tr></table></figure>
-
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Tag tag &#x3D; new Tag();</span><br><span class="line">tag.setIsVisible(true);</span><br><span class="line">tags.add(tag);</span><br><span class="line">Mockito.when(redisDao.get(Mockito.anyString())).thenReturn(tags);</span><br><span class="line">tags &#x3D; null;</span><br><span class="line">Mockito.when(redisDao.get(Mockito.anyString())).thenReturn(tags);</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Mockito.when(shareTemplateMapper.selectById(<span class="number">1</span>)).thenThrow(<span class="keyword">new</span> NullPointerException());</span><br><span class="line">Mockito.when(shareTemplateMapper.selectById(<span class="number">1</span>)).thenReturn(shareTemplate);<span class="comment">//报错</span></span><br><span class="line">Mockito.when(shareTemplateMapper.selectById(<span class="number">2</span>)).thenReturn(shareTemplate);<span class="comment">//不报错</span></span><br><span class="line"></span><br><span class="line">Mockito.when(shareTemplateMapper.updateById(shareTemplate)).thenReturn(<span class="number">1</span>);</span><br><span class="line">Mockito.when(shareTemplateMapper.updateById(shareTemplate)).thenThrow(<span class="keyword">new</span> NullPointerException());<span class="comment">//不报错</span></span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-
-
-
-
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://mayeeeeeeee.github.io/2020/07/12/Git%E5%AD%A6%E4%B9%A0/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/blog/images/avatar.png">
-      <meta itemprop="name" content="zhiwen">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Wangerous' Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/blog/2020/07/12/Git%E5%AD%A6%E4%B9%A0/" class="post-title-link" itemprop="url">未命名</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2020-07-12 10:48:36 / 修改时间：13:01:44" itemprop="dateCreated datePublished" datetime="2020-07-12T10:48:36+08:00">2020-07-12</time>
-            </span>
-
-          
 
         </div>
       </header>
@@ -1157,6 +1013,242 @@
   
   
 
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://mayeeeeeeee.github.io/2020/08/04/Mysql%E7%B4%A2%E5%BC%95%E5%BA%95%E5%B1%82%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/blog/images/avatar.png">
+      <meta itemprop="name" content="zhiwen">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="zhiwen' Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/blog/2020/08/04/Mysql%E7%B4%A2%E5%BC%95%E5%BA%95%E5%B1%82%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" class="post-title-link" itemprop="url">MySQL索引底层数据结构</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-08-04 21:08:55" itemprop="dateCreated datePublished" datetime="2020-08-04T21:08:55+08:00">2020-08-04</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-08-09 00:18:44" itemprop="dateModified" datetime="2020-08-09T00:18:44+08:00">2020-08-09</time>
+              </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>1.1k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>2 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="什么是索引"><a href="#什么是索引" class="headerlink" title="什么是索引"></a>什么是索引</h3><p>索引是一种<strong>有序</strong>的数据结构。</p>
+<h3 id="索引数据结构"><a href="#索引数据结构" class="headerlink" title="索引数据结构"></a>索引数据结构</h3><ul>
+<li><p><strong>二叉树(二叉排序树)</strong></p>
+<p>极端情况退化为链表</p>
+</li>
+<li><p><strong>红黑树(二叉平衡树)</strong></p>
+<p>树的高度高(查找层数高)</p>
+</li>
+<li><p><strong>Hash表</strong></p>
+</li>
+<li><p><strong>B-Tree</strong></p>
+</li>
+</ul>
+<p>对于树形索引结构，查找次数等于树的高度。通常高度越低查找速度更快。</p>
+<p>B-Tree相比于二叉排序树（或二叉平衡树）的优势，每一个节点尽可能放多个索引（这里在节点内部为内存中查找，查找时间可以忽略），这样下一层可以有更多的节点，使得树的高度越小。</p>
+<p><strong>结论：存储相同的数据，每个节点存放的数据越多，整个树的高度越低，查找次数越少。</strong></p>
+<p><img src="/blog/2020/08/04/Mysql%E7%B4%A2%E5%BC%95%E5%BA%95%E5%B1%82%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/1.png" alt="B树"></p>
+<p>而Mysql真正选取的是一种优化的B-Tree —&gt; B+Tree。</p>
+<p>B+树与B树的区别：</p>
+<p><img src="/blog/2020/08/04/Mysql%E7%B4%A2%E5%BC%95%E5%BA%95%E5%B1%82%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/2.png" alt="image-20200724093626358"></p>
+<ol>
+<li><p>B+树只有叶子结点存放数据，非叶子结点只存索引。</p>
+<p>好处：非叶子结点只存在索引，会使每个非叶子结点存储更多的索引值，整个树的高度</p>
+</li>
+<li><p>B+树叶子结点之间存在指针，可以实现顺序访问。</p>
+</li>
+</ol>
+<h3 id="Mysql索引"><a href="#Mysql索引" class="headerlink" title="Mysql索引"></a>Mysql索引</h3><p>Mysql存储引擎常用InnoDB、MyISAM、是==针对表==而言的</p>
+<h4 id="MyISAM"><a href="#MyISAM" class="headerlink" title="MyISAM"></a>MyISAM</h4><p>索引结构：非聚集索引，主键索引与非主键结构相同</p>
+<p><img src="/blog/2020/08/04/Mysql%E7%B4%A2%E5%BC%95%E5%BA%95%E5%B1%82%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/3.png" alt="image-20200725103605551"></p>
+<p>MyISAM表文件</p>
+<ul>
+<li><p>${table_name}.frm 表结构文件</p>
+</li>
+<li><p>${table_name}.myd 表数据文件</p>
+</li>
+<li><p>${table_name}.myi 表索引文件</p>
+</li>
+</ul>
+<h4 id="InnoDB"><a href="#InnoDB" class="headerlink" title="InnoDB"></a>InnoDB</h4><p>索引结构：主键为聚集索引、非主键为非聚集索引（结构与MyISAM相同）</p>
+<ul>
+<li>主键(聚集)索引：</li>
+</ul>
+<p><img src="/blog/2020/08/04/Mysql%E7%B4%A2%E5%BC%95%E5%BA%95%E5%B1%82%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/4.png" alt="image-20200725104217001"></p>
+<ul>
+<li>非主键(索引)：</li>
+</ul>
+<p><img src="/blog/2020/08/04/Mysql%E7%B4%A2%E5%BC%95%E5%BA%95%E5%B1%82%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/5.png" alt="image-20200725110338861"></p>
+<p>​    非主键索引域存放主键值，查找时还需回表至聚集索引中(利用主键)查找数据。</p>
+<p>InnoDB表文件</p>
+<ul>
+<li>${table_name}.frm 表结构文件(高版本Mysql移除？)</li>
+<li>${table_name}.ibd 聚集索引</li>
+</ul>
+<h4 id="联合索引"><a href="#联合索引" class="headerlink" title="联合索引"></a>联合索引</h4><p><img src="/blog/2020/08/04/Mysql%E7%B4%A2%E5%BC%95%E5%BA%95%E5%B1%82%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/6.png" alt="image-20200725111618600"></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> employees <span class="keyword">where</span> <span class="keyword">name</span> = <span class="string">&#x27;Bill&#x27;</span> <span class="keyword">and</span> age = <span class="number">31</span>;    <span class="comment">#走索引</span></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> employees <span class="keyword">where</span> age = <span class="string">&#x27;30&#x27;</span> <span class="keyword">and</span> <span class="keyword">position</span> = <span class="string">&#x27;dev&#x27;</span>;    <span class="comment">#不走索引</span></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> employees <span class="keyword">where</span> <span class="keyword">position</span> = <span class="string">&#x27;manager;&#x27;</span>    <span class="comment">#不走索引</span></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> employees <span class="keyword">where</span> age = <span class="string">&#x27;12&#x27;</span> <span class="keyword">and</span> <span class="keyword">position</span> = <span class="string">&#x27;manager&#x27;</span> <span class="keyword">and</span> <span class="keyword">name</span> = <span class="string">&#x27;Bill&#x27;</span>;    <span class="comment">#走索引</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><ol>
+<li><p>为什么InnoDB推荐建一个整型自增主键？    </p>
+<p>答：索引查找过程需要比较大小，整型比较大小快；便于B+树的维护(插入)。</p>
+</li>
+<li><p>为什么Mysql不推荐用Hash索引(Mysql可选)？</p>
+<p>答：不支持范围查找</p>
+</li>
+<li><p>为什么InnoDB非主键索引不用聚集索引呢(索引中存放数据)？</p>
+<p>答：一致性和节省空间</p>
+</li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://mayeeeeeeee.github.io/2020/08/01/Mockito%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/blog/images/avatar.png">
+      <meta itemprop="name" content="zhiwen">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="zhiwen' Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/blog/2020/08/01/Mockito%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95/" class="post-title-link" itemprop="url">Mockito单元测试</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-08-01 15:34:44" itemprop="dateCreated datePublished" datetime="2020-08-01T15:34:44+08:00">2020-08-01</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-08-09 00:17:53" itemprop="dateModified" datetime="2020-08-09T00:17:53+08:00">2020-08-09</time>
+              </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>850</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>1 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">set(String s, List l, <span class="keyword">long</span>, l)</span><br><span class="line">doNothing().when(redisDao).set(Mockito.anyString(), Mockito.anyObject(), Mockito.anyLong(  <span class="comment">//不报异常</span></span><br><span class="line">  </span><br><span class="line">doNothing().when(redisDao).set(Mockito.anyString(), Mockito.anyList(), Mockito.anyLong());   <span class="comment">//报异常</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Tag tag &#x3D; new Tag();</span><br><span class="line">tag.setIsVisible(true);</span><br><span class="line">tags.add(tag);</span><br><span class="line">Mockito.when(redisDao.get(Mockito.anyString())).thenReturn(tags);</span><br><span class="line">tags &#x3D; null;</span><br><span class="line">Mockito.when(redisDao.get(Mockito.anyString())).thenReturn(tags);</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Mockito.when(shareTemplateMapper.selectById(<span class="number">1</span>)).thenThrow(<span class="keyword">new</span> NullPointerException());</span><br><span class="line">Mockito.when(shareTemplateMapper.selectById(<span class="number">1</span>)).thenReturn(shareTemplate);<span class="comment">//报错</span></span><br><span class="line">Mockito.when(shareTemplateMapper.selectById(<span class="number">2</span>)).thenReturn(shareTemplate);<span class="comment">//不报错</span></span><br><span class="line"></span><br><span class="line">Mockito.when(shareTemplateMapper.updateById(shareTemplate)).thenReturn(<span class="number">1</span>);</span><br><span class="line">Mockito.when(shareTemplateMapper.updateById(shareTemplate)).thenThrow(<span class="keyword">new</span> NullPointerException());<span class="comment">//不报错</span></span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
 
   
 
@@ -1230,7 +1322,7 @@
         </a>
       </div>
       <div class="site-state-item site-state-tags">
-        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-count">4</span>
         <span class="site-state-item-name">标签</span>
       </div>
   </nav>
@@ -1262,9 +1354,22 @@
     <i class="fa fa-heart"></i>
   </span>
   <span class="author" itemprop="copyrightHolder">zhiwen</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="站点总字数">16k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">26 分钟</span>
 </div>
+
+<!--
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
   </div>
+-->
 
         
 <div class="busuanzi-count">
