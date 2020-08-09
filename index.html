@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#222">
 <meta name="generator" content="Hexo 5.0.0">
   <link rel="apple-touch-icon" sizes="180x180" href="/blog/images/apple-touch-icon-next.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/blog/images/favicon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/blog/images/images/favicon.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/blog/images/favicon-16x16-next.png">
   <link rel="mask-icon" href="/blog/images/logo.svg" color="#222">
 
@@ -14,10 +14,12 @@
 
 
 <link rel="stylesheet" href="/blog/lib/font-awesome/css/all.min.css">
+  
+  <link rel="stylesheet" href="/blog/lib/animate-css/animate.min.css">
 
-<script id="hexo-configurations">
+<script class="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"mayeeeeeeee.github.io","root":"/blog/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.json"};
+    var CONFIG = {"hostname":"mayeeeeeeee.github.io","root":"/blog/","scheme":"Gemini","version":"8.0.0-rc.5","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"path":"search.json","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
   </script>
 
   <meta property="og:type" content="website">
@@ -31,7 +33,7 @@
 <link rel="canonical" href="https://mayeeeeeeee.github.io/">
 
 
-<script id="page-configurations">
+<script class="page-configurations">
   // https://hexo.io/docs/variables.html
   CONFIG.page = {
     sidebar: "",
@@ -39,14 +41,6 @@
     isPost : false,
     lang   : 'zh-CN'
   };
-   (function(){
-        if(''){
-            if (prompt('请输入文章密码') !== ''){
-                alert('密码错误！');
-                history.back();
-            }
-        }
-    })();
 </script>
 
   <title>zhiwen' Blog</title>
@@ -59,24 +53,36 @@
 
   <noscript>
   <style>
-  .use-motion .brand,
+  body { margin-top: 2rem; }
+
   .use-motion .menu-item,
-  .sidebar-inner,
+  .use-motion .sidebar,
   .use-motion .post-block,
   .use-motion .pagination,
   .use-motion .comments,
   .use-motion .post-header,
   .use-motion .post-body,
-  .use-motion .collection-header { opacity: initial; }
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
 
   .use-motion .site-title,
-  .use-motion .site-subtitle {
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
     opacity: initial;
     top: initial;
   }
 
-  .use-motion .logo-line-before i { left: initial; }
-  .use-motion .logo-line-after i { right: initial; }
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
   </style>
 </noscript>
 
@@ -86,22 +92,23 @@
   <div class="container use-motion">
     <div class="headband"></div>
 
-    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
-      <div class="header-inner"><div class="site-brand-container">
+    <main class="main">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+        <div class="header-inner"><div class="site-brand-container">
   <div class="site-nav-toggle">
     <div class="toggle" aria-label="切换导航栏">
-      <span class="toggle-line toggle-line-first"></span>
-      <span class="toggle-line toggle-line-middle"></span>
-      <span class="toggle-line toggle-line-last"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
     </div>
   </div>
 
   <div class="site-meta">
 
     <a href="/blog/" class="brand" rel="start">
-      <span class="logo-line-before"><i></i></span>
+      <i class="logo-line"></i>
       <h1 class="site-title">zhiwen' Blog</h1>
-      <span class="logo-line-after"><i></i></span>
+      <i class="logo-line"></i>
     </a>
   </div>
 
@@ -111,7 +118,6 @@
     </div>
   </div>
 </div>
-
 
 
 
@@ -153,7 +159,7 @@
     <i class="fa fa-search"></i>
   </span>
   <div class="search-input-container">
-    <input autocomplete="off" autocapitalize="off"
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
            placeholder="搜索..." spellcheck="false"
            type="search" class="search-input">
   </div>
@@ -163,7 +169,7 @@
 </div>
 <div id="search-result">
   <div id="no-result">
-    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
   </div>
 </div>
 
@@ -171,22 +177,84 @@
   </div>
 
 </div>
-    </header>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
 
-    
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-overview-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <section class="post-toc-wrap sidebar-panel">
+      </section>
+      <!--/noindex-->
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="zhiwen"
+      src="/blog/images/avatar.png">
+  <p class="site-author-name" itemprop="name">zhiwen</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/blog/archives/">
+        
+          <span class="site-state-item-count">6</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+  <div class="sidebar-button animated"><i class="fa fa-comment"></i>
+    Chat
+  </a>
+  </div>
+
+
+
+      </section>
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </header>
+
+      
   <div class="back-to-top">
     <i class="fa fa-arrow-up"></i>
     <span>0%</span>
   </div>
 
+<noscript>
+  <div id="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
 
-    <main class="main">
+
       <div class="main-inner">
-        <div class="content-wrap">
-          
+        
 
-          <div class="content index posts-expand">
-            
+        <div class="content index posts-expand">
+          
       
   
   
@@ -202,6 +270,8 @@
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="zhiwen' Blog">
     </span>
+
+    
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
@@ -222,7 +292,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-08-09 00:23:13" itemprop="dateModified" datetime="2020-08-09T00:23:13+08:00">2020-08-09</time>
+                <time title="修改时间：2020-08-09 10:45:24" itemprop="dateModified" datetime="2020-08-09T10:45:24+08:00">2020-08-09</time>
               </span>
 
           <br>
@@ -248,61 +318,16 @@
     
     
     <div class="post-body" itemprop="articleBody">
-
-      
           <p>IOC即<strong>控制反转</strong>(Inversion of Control)，是<strong>依赖倒置原则</strong>(Dependency Inversion Principle，软件设计五大原则之一)一种代码设计的思路。具体实现方式为<strong>依赖注入</strong>(Dependency Injection, DI)。三者具体关系为：</p>
 <p>依赖倒置原则 –&gt; 控制反转(设计思路) –&gt; 依赖注入(具体实现思路)</p>
-<p><strong>何为依赖倒置原则？Robert C. Martin给出的定义如下：</strong></p>
-<blockquote>
-<p>高层模块不应该依赖于底层模块，二者都应该依赖于抽象</p>
-<p>抽象不应该依赖于细节，细节应该依赖于抽象</p>
-</blockquote>
-<p>术语较为晦涩难懂，举个栗子：</p>
-<p><img src="/blog/2020/08/03/IOC%E4%B8%8EDI/%E6%B1%BD%E8%BD%A6%E4%BE%9D%E8%B5%96%E8%BD%AE%E8%83%8E.png" alt="preview"></p>
-<p>当设计汽车时，先设计轮胎，然后底盘依赖设计好的轮胎进行设计，直至设计好整个汽车。而此时当轮胎需要变化时，地盘需要跟着变化进而适应轮胎的变化，进而整个汽车都需要变化。</p>
-<p>我们换一种思路</p>
-<p><img src="/blog/2020/08/03/IOC%E4%B8%8EDI/%E8%BD%AE%E8%83%8E%E4%BE%9D%E8%B5%96%E6%B1%BD%E8%BD%A6.png" alt="preview"></p>
-<p>如果先设计整个汽车概况，然后根据汽车概况设计车身，然后设计地盘、轮胎，此时整个依赖链条发生了反转，当轮胎发生变化时，只需要重新设计轮胎即可。<strong>这就是依赖反转的过程！</strong></p>
-<p><strong>下面用代码来说明:</strong></p>
-<p>实体类：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//汽车类(依赖车架)</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Car</span> </span>&#123;</span><br><span class="line">  <span class="keyword">private</span> Framework framework;<span class="comment">//车架</span></span><br><span class="line">  Car() &#123;<span class="keyword">this</span>.framework = <span class="keyword">new</span> framework();&#125;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span></span>&#123;...&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//车架类(依赖底盘)</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Framework</span></span>&#123;</span><br><span class="line">  <span class="keyword">private</span> Bottom bottom;</span><br><span class="line">  Framework()&#123;<span class="keyword">this</span>.bottom = <span class="keyword">new</span> Bottom();&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//底盘类(依赖轮胎)</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Bottom</span></span>&#123;</span><br><span class="line">  <span class="keyword">private</span> Tire tire;</span><br><span class="line">  Bottom()&#123;<span class="keyword">this</span>.tire = <span class="keyword">new</span> Tire();&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//轮胎类</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Tire</span></span>&#123;</span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">int</span> size;</span><br><span class="line">  Tire()&#123;<span class="keyword">this</span>.size = <span class="number">10</span>;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>业务类：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//实例化一个汽车对象, 并执行run方法</span></span><br><span class="line">Car car = <span class="keyword">new</span> Car();</span><br><span class="line">car.run();</span><br></pre></td></tr></table></figure>
-
-<p>此时依赖关系为Car -&gt; Framework -&gt; Bottom -&gt;Tire，若此时业务需求发生了变化，需自定义轮胎尺寸，即Tire类size属性根据参数初始化。则上述代码需要修改。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//首先修改轮胎类</span></span><br><span class="line">Class Tire&#123;</span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">int</span> size;</span><br><span class="line">  Tire(<span class="keyword">int</span> size)&#123;<span class="keyword">this</span>.size = size;&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//然后需要修改底盘类(依赖轮胎)</span></span><br><span class="line">Class Bottom&#123;</span><br><span class="line">  <span class="keyword">private</span> Tire tire;</span><br><span class="line">  Bottom(<span class="keyword">int</span> tireSize)&#123;<span class="keyword">this</span>.tire = <span class="keyword">new</span> Tire(tireSize);&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//进而修改车架类(依赖底盘)</span></span><br><span class="line">Class Framework&#123;</span><br><span class="line">  <span class="keyword">private</span> Bottom bottom;</span><br><span class="line">  Framework(<span class="keyword">int</span> tireSize)&#123;<span class="keyword">this</span>.bottom = <span class="keyword">new</span> Bottom(tireSize);&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//最后修改汽车类(依赖车架)</span></span><br><span class="line">Class Car &#123;</span><br><span class="line">  <span class="keyword">private</span> Framework framework;<span class="comment">//车架</span></span><br><span class="line">  Car(<span class="keyword">int</span> tireSize) &#123;<span class="keyword">this</span>.framework = <span class="keyword">new</span> Framework(tireSize);&#125;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span></span>&#123;...&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//实例化一个轮胎尺寸为30的汽车对象, 并执行run方法</span></span><br><span class="line">Car car = <span class="keyword">new</span> Car(<span class="number">30</span>);</span><br><span class="line">car.run();</span><br></pre></td></tr></table></figure>
-
-<p>这种高层依赖底层的依赖关系，底层模块发生变化，高层模块都要随之变化，可谓牵一发而动全身，维护成本极高。违反了依赖导致原则。要遵守依赖导致原则，达到控制反转，通常使用依赖注入的方式来实现，具体有<strong>构造方法注入</strong>、<strong>setter方法注入</strong>、<strong>接口注入</strong>三种实现方法，构造方法注入、setter方法注入适用于链式依赖关系（如本例）。接口注入适用于星型依赖关系。下面尝试使用构造方法注入、setter方法注入对本例进行改造。</p>
-<ul>
-<li><strong>构造方法注入</strong></li>
-</ul>
-<p>实体类改造</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//汽车类(构造时需注入Framework属性)</span></span><br><span class="line">Class Car &#123;</span><br><span class="line">  <span class="keyword">private</span> Framework framework;<span class="comment">//车架</span></span><br><span class="line">  Car(Framework framework) &#123;<span class="keyword">this</span>.framework = framework;&#125;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span></span>&#123;...&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//车架类(构造时需注入Bottom属性)</span></span><br><span class="line">Class Framework&#123;</span><br><span class="line">  <span class="keyword">private</span> Bottom bottom;</span><br><span class="line">  Framework(Bottom bottom)&#123;<span class="keyword">this</span>.bottom = bottom;&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//底盘类(构造时需注入tire属性)</span></span><br><span class="line">Class Bottom&#123;</span><br><span class="line">  <span class="keyword">private</span> Tire tire;</span><br><span class="line">  Bottom(Tire tire)&#123;<span class="keyword">this</span>.tire = tire;&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//轮胎类</span></span><br><span class="line">Class Tire&#123;</span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">int</span> size;</span><br><span class="line">  Tire()&#123;<span class="keyword">this</span>.size = <span class="number">10</span>;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>业务类</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">    构造Car对象需要注入Framework对象，构造Framework对象需要注入Bottom对象，构造Bottom对象需要Tire对象，所以要先构造底层Tire对象，逐步向高层注入。进而实现了控制反转。</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line">Tire tire = <span class="keyword">new</span> Tire(<span class="number">40</span>);</span><br><span class="line">Bottom bottom = <span class="keyword">new</span> Bottom(tire);</span><br><span class="line">Framework framework = <span class="keyword">new</span> Framework(bottom);</span><br><span class="line">Car car = <span class="keyword">new</span> Car(framework);</span><br><span class="line">car.run();</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><strong>Setter方法注入</strong></li>
-</ul>
-<p>实体类改造</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//汽车类(添加framework属性的setter方法)</span></span><br><span class="line">Class Car &#123;</span><br><span class="line">  <span class="keyword">private</span> Framework framework;<span class="comment">//车架</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setFramework</span><span class="params">(Framework framework)</span> </span>&#123;<span class="keyword">this</span>.framework = framework;&#125;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span></span>&#123;...&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//车架类(添加bottom属性的setter方法)</span></span><br><span class="line">Class Framework&#123;</span><br><span class="line">  <span class="keyword">private</span> Bottom bottom;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setBottom</span><span class="params">(Bottom bottom)</span></span>&#123;<span class="keyword">this</span>.bottom = bottom;&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//底盘类(添加Tire属性的setter方法)</span></span><br><span class="line">Class Bottom&#123;</span><br><span class="line">  <span class="keyword">private</span> Tire tire;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setTire</span><span class="params">(Tire tire)</span></span>&#123;<span class="keyword">this</span>.tire = tire;&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//轮胎类</span></span><br><span class="line">Class Tire&#123;</span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">int</span> size;</span><br><span class="line">  Tire()&#123;<span class="keyword">this</span>.size = <span class="number">10</span>;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>业务类</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//setter注入与构造器方法类似</span></span><br><span class="line">Tire tire = <span class="keyword">new</span> Tire(<span class="number">40</span>);</span><br><span class="line">Bottom bottom = <span class="keyword">new</span> Bottom();</span><br><span class="line">bottom.setTire(tire);</span><br><span class="line">Framework framework = <span class="keyword">new</span> Framework();</span><br><span class="line">framework.setBottom(bottom);</span><br><span class="line">Car car = <span class="keyword">new</span> Car();</span><br><span class="line">car.setFramework(framework);</span><br><span class="line">car.run();</span><br></pre></td></tr></table></figure>
-
-<p><strong>下面举一个接口注入的例子</strong></p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//person类</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span></span>&#123;</span><br><span class="line">  <span class="keyword">private</span> BenzCar myBenz;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="title">setMyBenz</span><span class="params">(BenzCar myBenz)</span> </span>&#123;<span class="keyword">this</span>.myBenz = myBenz;&#125;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">driveBenz</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.myBenz.run()</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//BenzCar类</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BenzCar</span></span>&#123;</span><br><span class="line">  <span class="keyword">private</span> String name = <span class="string">&quot;Benz&quot;</span>;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    System.Out.Println(<span class="keyword">this</span>.name + <span class="string">&quot; is running&quot;</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//人驾驶奔驰</span></span><br><span class="line">Person ps = <span class="keyword">new</span> Person();</span><br><span class="line">ps.setMyBenz(<span class="keyword">new</span> BenzCar())</span><br><span class="line">ps.driveBenz()</span><br></pre></td></tr></table></figure>
-
-<p>上述例子Person类依赖BenzCar类，当需求增加人驾驶宝马车，则不仅要添加宝马类，还要对Person类修改，上述代码则变为：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//person类</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span></span>&#123;</span><br><span class="line">  <span class="keyword">private</span> BenzCar myBenz;</span><br><span class="line">  <span class="keyword">private</span> BMWCar myBMW;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="title">setMyBenz</span><span class="params">(BenzCar myBenz)</span> </span>&#123;<span class="keyword">this</span>.myBenz = myBenz;&#125;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="title">setMyBMW</span><span class="params">(BMWCar myBMW)</span> </span>&#123;<span class="keyword">this</span>.myBMW = myBMW;&#125;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">driveBenz</span> <span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.myBenz.run()</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">driveBMW</span> <span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.myBMW.run()</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//BenzCar类</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BenzCar</span></span>&#123;</span><br><span class="line">  <span class="keyword">private</span> String name = <span class="string">&quot;Benz&quot;</span>;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    System.Out.Println(<span class="keyword">this</span>.name + <span class="string">&quot; is running&quot;</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//BMWCar类</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BMWCar</span></span>&#123;</span><br><span class="line">  <span class="keyword">private</span> String name = <span class="string">&quot;BMW&quot;</span>;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    System.out.println(<span class="keyword">this</span>.name + <span class="string">&quot; is running&quot;</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//人驾驶宝马</span></span><br><span class="line">Person ps = <span class="keyword">new</span> Person();</span><br><span class="line">ps.setMyBMW(<span class="keyword">new</span> BMWCar())</span><br><span class="line">ps.driveBMW()</span><br></pre></td></tr></table></figure>
-
-<p>上述设计每次新增一个汽车类型，都要重新修改Person代码，违反了开闭原则、依赖倒置原则。下面使用<strong>接口注入</strong>方法进行重构：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//定义Car接口</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Car</span></span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//BenzCar类实现Car接口</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BenzCar</span> <span class="keyword">implements</span> <span class="title">Car</span> </span>&#123;</span><br><span class="line">  <span class="keyword">private</span> String name;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="title">BenzCar</span><span class="params">(String name)</span> </span>&#123;<span class="keyword">this</span>.name = name;&#125;</span><br><span class="line">  <span class="meta">@Override</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">   System.out.println(<span class="keyword">this</span>.name + <span class="string">&quot;is running&quot;</span>); </span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//BMWCar类实现Car接口</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BMWCar</span> <span class="keyword">implements</span> <span class="title">Car</span> </span>&#123;</span><br><span class="line">  <span class="keyword">private</span> String name;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="title">BMWCar</span><span class="params">(String name)</span> </span>&#123;<span class="keyword">this</span>.name = name;&#125;</span><br><span class="line">  <span class="meta">@Override</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">   System.out.println(<span class="keyword">this</span>.name + <span class="string">&quot;is running&quot;</span>); </span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//Person类针对接口编程</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span> </span>&#123;</span><br><span class="line">   <span class="keyword">private</span> Car car;</span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="title">setCar</span><span class="params">(Car car)</span> </span>&#123;<span class="keyword">this</span>.car = car;&#125;</span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">drive</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.car.run()</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//业务调用</span></span><br><span class="line">Person ps1 = <span class="keyword">new</span> Person();</span><br><span class="line">Person ps2 = <span class="keyword">new</span> Person();</span><br><span class="line"><span class="comment">//人驾驶奔驰</span></span><br><span class="line">Car benzCar = <span class="keyword">new</span> BenzCar(myBenz);</span><br><span class="line">ps1.setCar(benzCar);</span><br><span class="line">ps1.drive();</span><br><span class="line"><span class="comment">//人驾驶宝马</span></span><br><span class="line">Car bmwCar = <span class="keyword">new</span> BMWCar(myBMW);</span><br><span class="line">ps2.setCar(bmwCar);</span><br><span class="line">ps2.drive();</span><br></pre></td></tr></table></figure>
-
-<p>Person类针对Car接口进行编程，当业务增加了新的车型时，只需要对Car接口进行实现即可，无需修改原有代码，减少了维护的成本。</p>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/blog/2020/08/03/IOC%E4%B8%8EDI/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -332,6 +357,8 @@
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="zhiwen' Blog">
     </span>
+
+    
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
@@ -372,8 +399,6 @@
     
     
     <div class="post-body" itemprop="articleBody">
-
-      
           <h3 id="Explain中的列"><a href="#Explain中的列" class="headerlink" title="Explain中的列"></a>Explain中的列</h3><ul>
 <li><p><strong>id</strong></p>
 <p>id列的编号是 select 的序列号，id值越大表示该select越先执行，id相同顺序执行。</p>
@@ -539,6 +564,8 @@
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="zhiwen' Blog">
     </span>
+
+    
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
@@ -579,8 +606,6 @@
     
     
     <div class="post-body" itemprop="articleBody">
-
-      
           <h1 id="MySQL锁与事务"><a href="#MySQL锁与事务" class="headerlink" title="MySQL锁与事务"></a>MySQL锁与事务</h1><p>本笔记主要针对InnoDB引擎</p>
 <h2 id="锁"><a href="#锁" class="headerlink" title="锁"></a>锁</h2><p>锁是区分数据库区别于文件系统的一个关键特性。</p>
 <h3 id="lock与latch"><a href="#lock与latch" class="headerlink" title="lock与latch"></a>lock与latch</h3><p>二者区别：</p>
@@ -877,6 +902,8 @@
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="zhiwen' Blog">
     </span>
+
+    
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
@@ -923,8 +950,6 @@
     
     
     <div class="post-body" itemprop="articleBody">
-
-      
           <h1 id="Git命令学习"><a href="#Git命令学习" class="headerlink" title="Git命令学习"></a>Git命令学习</h1><h2 id="Git基本命令"><a href="#Git基本命令" class="headerlink" title="Git基本命令"></a>Git基本命令</h2><ul>
 <li><p>初始化本地仓库</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git clone $&#123;remote_url&#125; #从远程仓库克隆</span><br><span class="line">git init $&#123;repository_name&#125; #初始化本地目录</span><br></pre></td></tr></table></figure>
@@ -1028,6 +1053,8 @@
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="zhiwen' Blog">
     </span>
+
+    
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
@@ -1074,8 +1101,6 @@
     
     
     <div class="post-body" itemprop="articleBody">
-
-      
           <h3 id="什么是索引"><a href="#什么是索引" class="headerlink" title="什么是索引"></a>什么是索引</h3><p>索引是一种<strong>有序</strong>的数据结构。</p>
 <h3 id="索引数据结构"><a href="#索引数据结构" class="headerlink" title="索引数据结构"></a>索引数据结构</h3><ul>
 <li><p><strong>二叉树(二叉排序树)</strong></p>
@@ -1176,6 +1201,8 @@
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="zhiwen' Blog">
     </span>
+
+    
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
@@ -1222,8 +1249,6 @@
     
     
     <div class="post-body" itemprop="articleBody">
-
-      
           <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">set(String s, List l, <span class="keyword">long</span>, l)</span><br><span class="line">doNothing().when(redisDao).set(Mockito.anyString(), Mockito.anyObject(), Mockito.anyLong(  <span class="comment">//不报异常</span></span><br><span class="line">  </span><br><span class="line">doNothing().when(redisDao).set(Mockito.anyString(), Mockito.anyList(), Mockito.anyLong());   <span class="comment">//报异常</span></span><br></pre></td></tr></table></figure>
 
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Tag tag &#x3D; new Tag();</span><br><span class="line">tag.setIsVisible(true);</span><br><span class="line">tags.add(tag);</span><br><span class="line">Mockito.when(redisDao.get(Mockito.anyString())).thenReturn(tags);</span><br><span class="line">tags &#x3D; null;</span><br><span class="line">Mockito.when(redisDao.get(Mockito.anyString())).thenReturn(tags);</span><br></pre></td></tr></table></figure>
@@ -1254,8 +1279,8 @@
 
 
 
-          </div>
-          
+        </div>
+        
 
 <script>
   window.addEventListener('tabs:register', () => {
@@ -1278,64 +1303,6 @@
     });
   }
 </script>
-
-        </div>
-          
-  
-  <div class="toggle sidebar-toggle">
-    <span class="toggle-line toggle-line-first"></span>
-    <span class="toggle-line toggle-line-middle"></span>
-    <span class="toggle-line toggle-line-last"></span>
-  </div>
-
-  <aside class="sidebar">
-    <div class="sidebar-inner">
-
-      <ul class="sidebar-nav motion-element">
-        <li class="sidebar-nav-toc">
-          文章目录
-        </li>
-        <li class="sidebar-nav-overview">
-          站点概览
-        </li>
-      </ul>
-
-      <!--noindex-->
-      <div class="post-toc-wrap sidebar-panel">
-      </div>
-      <!--/noindex-->
-
-      <div class="site-overview-wrap sidebar-panel">
-        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-    <img class="site-author-image" itemprop="image" alt="zhiwen"
-      src="/blog/images/avatar.png">
-  <p class="site-author-name" itemprop="name">zhiwen</p>
-  <div class="site-description" itemprop="description"></div>
-</div>
-<div class="site-state-wrap motion-element">
-  <nav class="site-state">
-      <div class="site-state-item site-state-posts">
-          <a href="/blog/archives/">
-        
-          <span class="site-state-item-count">6</span>
-          <span class="site-state-item-name">日志</span>
-        </a>
-      </div>
-      <div class="site-state-item site-state-tags">
-        <span class="site-state-item-count">4</span>
-        <span class="site-state-item-name">标签</span>
-      </div>
-  </nav>
-</div>
-
-
-
-      </div>
-
-    </div>
-  </aside>
-  <div id="sidebar-dimmer"></div>
-
 
       </div>
     </main>
@@ -1365,14 +1332,11 @@
     </span>
     <span title="站点阅读时长">26 分钟</span>
 </div>
-
-<!--
-  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
   </div>
   <div class="addthis_inline_share_toolbox">
     <script src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5f2f56805bb1b360" async="async"></script>
   </div>
--->
 
         
 <div class="busuanzi-count">
@@ -1409,20 +1373,13 @@
 
   
   <script src="/blog/lib/anime.min.js"></script>
-  <script src="/blog/lib/velocity/velocity.min.js"></script>
-  <script src="/blog/lib/velocity/velocity.ui.min.js"></script>
 
 <script src="/blog/js/utils.js"></script>
 
 <script src="/blog/js/motion.js"></script>
 
 
-<script src="/blog/js/schemes/pisces.js"></script>
-
-
 <script src="/blog/js/next-boot.js"></script>
-
-
 
 
   
