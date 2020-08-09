@@ -41,6 +41,16 @@
     isPost : false,
     lang   : 'zh-CN'
   };
+  
+    (function(){
+        if(''){
+            if (prompt('请输入文章密码') !== ''){
+                alert('密码错误！');
+                history.back();
+            }
+        }
+    })();
+
 </script>
 
   <title>标签: Spring | zhiwen' Blog</title>
@@ -355,8 +365,10 @@
     </span>
     <span title="站点阅读时长">26 分钟</span>
 </div>
+<!--
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
   </div>
+-->
 
         
 <div class="busuanzi-count">
@@ -426,6 +438,18 @@
 
   
 
+
+<script>
+NexT.utils.loadComments('#valine-comments', () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/valine@1/dist/Valine.min.js', () => {
+    new Valine(Object.assign({
+      el  : '#valine-comments',
+      path: location.pathname,
+    }, {"enable":true,"appId":"YvEVD6yA4zSx5oDspjmrOKQd-gzGzoHsz","appKey":"466XudW5NONdY4cnMEa9UaWy","placeholder":"Just say anything u wanna say","avatar":"mm","meta":["nick","mail","link"],"pageSize":10,"language":null,"visitor":true,"comment_count":true,"recordIP":false,"serverURLs":null,"enableQQ":false,"requiredFields":[]}
+    ));
+  }, window.Valine);
+});
+</script>
 
 </body>
 </html>
