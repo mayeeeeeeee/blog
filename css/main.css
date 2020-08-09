@@ -1711,6 +1711,15 @@ pre code {
   width: 100%;
   z-index: 1500;
 }
+.reading-progress-bar {
+  background: #37c6c0;
+  height: 3px;
+  left: 0;
+  position: fixed;
+  width: 0;
+  z-index: 1500;
+  bottom: 0;
+}
 .post-body {
   font-family: Lato, "PingFang SC", "Microsoft YaHei", sans-serif;
   overflow-wrap: break-word;
@@ -2001,23 +2010,6 @@ pre code {
   font-weight: normal;
   margin: initial;
   overflow-wrap: break-word;
-}
-.posts-expand .post-title .post-edit-link {
-  border-bottom: none;
-  color: #bbb;
-  display: inline-block;
-  float: right;
-  font-size: 1.25em;
-  margin-left: -1.2em;
-  transition: color 0.2s ease-in;
-}
-@media (max-width: 567px) {
-  .posts-expand .post-title .post-edit-link {
-    margin-left: initial;
-  }
-}
-.posts-expand .post-title .post-edit-link:hover {
-  color: #fc6423;
 }
 .posts-expand .post-title-link {
   border-bottom: none;

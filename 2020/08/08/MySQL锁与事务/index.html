@@ -244,10 +244,6 @@
       </div>
   </nav>
 </div>
-  <div class="sidebar-button animated"><i class="fa fa-comment"></i>
-    Chat
-  </a>
-  </div>
 
 
 
@@ -264,6 +260,7 @@
     <i class="fa fa-arrow-up"></i>
     <span>0%</span>
   </div>
+  <div class="reading-progress-bar"></div>
 
 <noscript>
   <div id="noscript-warning">Theme NexT works best with JavaScript enabled</div>
@@ -295,7 +292,7 @@
     
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          MySQL锁与事务<a href="https://github.com/mayeeeeeeee/blog/edit/master/_posts/MySQL%E9%94%81%E4%B8%8E%E4%BA%8B%E5%8A%A1.md" class="post-edit-link" title="编辑" rel="noopener" target="_blank"><i class="fa fa-pen-nib"></i></a>
+          MySQL锁与事务
         </h1>
 
         <div class="post-meta">
@@ -312,13 +309,6 @@
             </span>
 
           
-            <span id="/blog/2020/08/08/MySQL%E9%94%81%E4%B8%8E%E4%BA%8B%E5%8A%A1/" class="post-meta-item leancloud_visitors" data-flag-title="MySQL锁与事务" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="leancloud-visitors-count"></span>
-            </span>
             <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
               <span class="post-meta-item-icon">
                 <i class="fa fa-eye"></i>
@@ -344,14 +334,12 @@
               <span class="post-meta-item-icon">
                 <i class="far fa-file-word"></i>
               </span>
-                <span class="post-meta-item-text">本文字数：</span>
               <span>4.3k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
               <span>7 分钟</span>
             </span>
 
@@ -725,23 +713,6 @@
         
 <div class="busuanzi-count">
   <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
-      <span class="post-meta-item-icon">
-        <i class="fa fa-user"></i>
-      </span>
-      <span class="site-uv" title="总访客量">
-        <span id="busuanzi_value_site_uv"></span>
-      </span>
-    </span>
-    <span class="post-meta-divider">|</span>
-    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
-      <span class="post-meta-item-icon">
-        <i class="fa fa-eye"></i>
-      </span>
-      <span class="site-pv" title="总访问量">
-        <span id="busuanzi_value_site_pv"></span>
-      </span>
-    </span>
 </div>
 
 
@@ -797,7 +768,7 @@ NexT.utils.loadComments('#valine-comments', () => {
     new Valine(Object.assign({
       el  : '#valine-comments',
       path: location.pathname,
-    }, {"enable":true,"appId":"YvEVD6yA4zSx5oDspjmrOKQd-gzGzoHsz","appKey":"466XudW5NONdY4cnMEa9UaWy","placeholder":"Just say anything u wanna say","avatar":"mm","meta":["nick","mail","link"],"pageSize":10,"language":null,"visitor":true,"comment_count":true,"recordIP":false,"serverURLs":null,"enableQQ":false,"requiredFields":[]}
+    }, {"enable":true,"appId":"YvEVD6yA4zSx5oDspjmrOKQd-gzGzoHsz","appKey":"466XudW5NONdY4cnMEa9UaWy","placeholder":"Just say anything u wanna say","avatar":"mm","meta":["nick","mail","link"],"pageSize":10,"language":null,"visitor":false,"comment_count":true,"recordIP":false,"serverURLs":null,"enableQQ":false,"requiredFields":[]}
     ));
   }, window.Valine);
 });
