@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.0.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/blog/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/blog/images/images/favicon.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/blog/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/blog/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/blog/css/main.css">
+
+
+<link rel="stylesheet" href="/blog/lib/font-awesome/css/all.min.css">
+  
+  <link rel="stylesheet" href="/blog/lib/animate-css/animate.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"mayeeeeeeee.github.io","root":"/blog/","scheme":"Gemini","version":"8.0.0-rc.5","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"path":"search.json","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
+  </script>
+
+  <meta name="description" content="Abstract本文主要介绍Mysql中几种锁的概念，以及Mysql事物相关原理。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MySQL锁与事务">
+<meta property="og:url" content="https://mayeeeeeeee.github.io/2020/08/08/MySQL%E9%94%81%E4%B8%8E%E4%BA%8B%E5%8A%A1/index.html">
+<meta property="og:site_name" content="zhiwen&#39; Blog">
+<meta property="og:description" content="Abstract本文主要介绍Mysql中几种锁的概念，以及Mysql事物相关原理。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://mayeeeeeeee.github.io/blog/2020/08/08/MySQL%E9%94%81%E4%B8%8E%E4%BA%8B%E5%8A%A1/MVCC_mvcc1.png">
+<meta property="og:image" content="https://mayeeeeeeee.github.io/blog/2020/08/08/MySQL%E9%94%81%E4%B8%8E%E4%BA%8B%E5%8A%A1/MVCC_版本链.png">
+<meta property="og:image" content="https://mayeeeeeeee.github.io/blog/2020/08/08/MySQL%E9%94%81%E4%B8%8E%E4%BA%8B%E5%8A%A1/MVCC_mvcc2.png">
+<meta property="article:published_time" content="2020-08-08T09:08:58.000Z">
+<meta property="article:modified_time" content="2020-08-09T09:54:35.140Z">
+<meta property="article:author" content="zhiwen">
+<meta property="article:tag" content="Mysql">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://mayeeeeeeee.github.io/blog/2020/08/08/MySQL%E9%94%81%E4%B8%8E%E4%BA%8B%E5%8A%A1/MVCC_mvcc1.png">
+
+<link rel="canonical" href="https://mayeeeeeeee.github.io/2020/08/08/MySQL%E9%94%81%E4%B8%8E%E4%BA%8B%E5%8A%A1/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+  
+    (function(){
+        if(''){
+            if (prompt('请输入文章密码') !== ''){
+                alert('密码错误！');
+                history.back();
+            }
+        }
+    })();
+
+</script>
+
+  <title>MySQL锁与事务 | zhiwen' Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <main class="main">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+        <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/blog/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">zhiwen' Blog</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/blog/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/blog/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/blog/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/blog/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <section class="post-toc-wrap sidebar-panel">
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Abstract"><span class="nav-number">1.</span> <span class="nav-text">Abstract</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#MySQL%E9%94%81%E4%B8%8E%E4%BA%8B%E5%8A%A1"><span class="nav-number">2.</span> <span class="nav-text">MySQL锁与事务</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%94%81"><span class="nav-number">2.1.</span> <span class="nav-text">锁</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#lock%E4%B8%8Elatch"><span class="nav-number">2.1.1.</span> <span class="nav-text">lock与latch</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lock%E9%94%81%E7%B1%BB%E5%9E%8B"><span class="nav-number">2.1.2.</span> <span class="nav-text">lock锁类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A1%8C%E9%94%81%E7%9A%843%E7%A7%8D%E7%AE%97%E6%B3%95"><span class="nav-number">2.1.3.</span> <span class="nav-text">行锁的3种算法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8B%E5%8A%A1"><span class="nav-number">2.2.</span> <span class="nav-text">事务</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%8B%E5%8A%A1%E7%9A%84%E5%9F%BA%E6%9C%AC%E7%89%B9%E6%80%A7"><span class="nav-number">2.2.1.</span> <span class="nav-text">事务的基本特性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B9%B6%E5%8F%91%E4%B8%80%E8%87%B4%E6%80%A7%E9%97%AE%E9%A2%98"><span class="nav-number">2.2.2.</span> <span class="nav-text">并发一致性问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%8B%E5%8A%A1%E7%9A%84%E9%9A%94%E7%A6%BB%E7%BA%A7%E5%88%AB"><span class="nav-number">2.2.3.</span> <span class="nav-text">事务的隔离级别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MVCC"><span class="nav-number">2.2.4.</span> <span class="nav-text">MVCC</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4"><span class="nav-number">2.3.</span> <span class="nav-text">常用命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%9D%A2%E8%AF%95%E9%97%AE%E9%A2%98%E8%A1%A5%E5%85%85"><span class="nav-number">2.4.</span> <span class="nav-text">面试问题补充</span></a></li></ol></li></ol></div>
+      </section>
+      <!--/noindex-->
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="zhiwen"
+      src="/blog/images/avatar.png">
+  <p class="site-author-name" itemprop="name">zhiwen</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/blog/archives/">
+        
+          <span class="site-state-item-count">7</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/blog/categories/">
+          
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/blog/tags/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </section>
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </header>
+
+      
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div id="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+      <div class="main-inner">
+        
+
+        <div class="content post posts-expand">
+          
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://mayeeeeeeee.github.io/2020/08/08/MySQL%E9%94%81%E4%B8%8E%E4%BA%8B%E5%8A%A1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/blog/images/avatar.png">
+      <meta itemprop="name" content="zhiwen">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="zhiwen' Blog">
+    </span>
+
+    
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          MySQL锁与事务
+        </h1>
+
+        <div class="post-meta">
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-08-08 17:08:58" itemprop="dateCreated datePublished" datetime="2020-08-08T17:08:58+08:00">2020-08-08</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-08-09 17:54:35" itemprop="dateModified" datetime="2020-08-09T17:54:35+08:00">2020-08-09</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/blog/categories/Mysql/" itemprop="url" rel="index"><span itemprop="name">Mysql</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/blog/2020/08/08/MySQL%E9%94%81%E4%B8%8E%E4%BA%8B%E5%8A%A1/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/blog/2020/08/08/MySQL%E9%94%81%E4%B8%8E%E4%BA%8B%E5%8A%A1/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+              <span>4.3k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+              <span>7 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="Abstract"><a href="#Abstract" class="headerlink" title="Abstract"></a>Abstract</h1><p>本文主要介绍Mysql中几种锁的概念，以及Mysql事物相关原理。</p>
+<a id="more"></a>
+
+<h1 id="MySQL锁与事务"><a href="#MySQL锁与事务" class="headerlink" title="MySQL锁与事务"></a>MySQL锁与事务</h1><p>本笔记主要针对InnoDB引擎</p>
+<h2 id="锁"><a href="#锁" class="headerlink" title="锁"></a>锁</h2><p>锁是区分数据库区别于文件系统的一个关键特性。</p>
+<h3 id="lock与latch"><a href="#lock与latch" class="headerlink" title="lock与latch"></a>lock与latch</h3><p>二者区别：</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Lock</th>
+<th>Latch</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>对象</td>
+<td>事务</td>
+<td>线程</td>
+</tr>
+<tr>
+<td>保护</td>
+<td>数据库内容</td>
+<td>内存数据结构</td>
+</tr>
+<tr>
+<td>持续时间</td>
+<td>整个事务过程</td>
+<td>临界资源访问过程</td>
+</tr>
+<tr>
+<td>模式</td>
+<td>行锁、表锁、意向锁</td>
+<td>读写锁、互斥量</td>
+</tr>
+<tr>
+<td>死锁</td>
+<td>通过waits-for graph、timeout等级制检测与处理</td>
+<td>无检测与处理机制</td>
+</tr>
+<tr>
+<td>存在于</td>
+<td>Lock Manager的哈希表中</td>
+<td>每个数据结构的对象中</td>
+</tr>
+</tbody></table>
+<p>latch相当于内存的锁，lock相当于数据库对象(表、行等)的锁。比如数据缓存中的某个块要被读取，我们会获得这个块的latch。这个过程叫做pin，另外一个进程恰好要修改这个块，他也要pin这个块，此时他必须等待。</p>
+<h3 id="lock锁类型"><a href="#lock锁类型" class="headerlink" title="lock锁类型"></a>lock锁类型</h3><ul>
+<li><p>共享锁(S Lock)：允许事务读一行数据</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 事务要获取某些行的 S 锁，必须先获得表的 IS 锁。</span></span><br><span class="line"><span class="keyword">SELECT</span> <span class="keyword">column</span> <span class="keyword">FROM</span> <span class="keyword">table</span> ... <span class="keyword">LOCK</span> <span class="keyword">IN</span> <span class="keyword">SHARE</span> <span class="keyword">MODE</span>;</span><br></pre></td></tr></table></figure>
+
+
+
+</li>
+</ul>
+<ul>
+<li><p>排他锁(X Lock)：允许事务删除或更新一行数据</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 事务要获取某些行的 X 锁，必须先获得表的 IX 锁。</span></span><br><span class="line"><span class="keyword">SELECT</span> * <span class="keyword">FROM</span> <span class="keyword">users</span> <span class="keyword">WHERE</span> <span class="keyword">id</span> = <span class="number">6</span> <span class="keyword">FOR</span> <span class="keyword">UPDATE</span>;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>意向共享锁(IS Lock)：事务想要获得一张表中某几行的共享锁</p>
+</li>
+<li><p>意向拍他锁(IS Lock)：事务想要获得一张表中某几行的排他锁</p>
+</li>
+</ul>
+<p>意向锁与行级锁的兼容性：指对同一记录(row)锁的兼容性情况</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>IS</th>
+<th>IX</th>
+<th>S</th>
+<th>X</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>IS</td>
+<td>兼容</td>
+<td>兼容</td>
+<td>兼容</td>
+<td>兼容</td>
+</tr>
+<tr>
+<td>IX</td>
+<td>兼容</td>
+<td>兼容</td>
+<td>不兼容</td>
+<td>不兼容</td>
+</tr>
+<tr>
+<td>S</td>
+<td>兼容</td>
+<td>不兼容</td>
+<td>兼容</td>
+<td>不兼容</td>
+</tr>
+<tr>
+<td>X</td>
+<td>不兼容</td>
+<td>不兼容</td>
+<td>不兼容</td>
+<td>不兼容</td>
+</tr>
+</tbody></table>
+<p>意向锁为表级锁，是由S、X行锁触发。故研究其与行锁的兼容性其实意义不大。百度百科中意向锁的意义：</p>
+<blockquote>
+<p>如果另一个任务试图在该表级别上应用共享或排它锁，则受到由第一个任务控制的表级别意向锁的阻塞。第二个任务在锁定该表前不必检查各个页或行锁，而只需检查表上的意向锁。</p>
+</blockquote>
+<p>意向锁是为了解决行锁与==表锁==(Mysql Server提供，非InnoDB)之间互斥关系而存在的。如：</p>
+<p>事务 A 获取了某一行的排他锁</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">-- 会先获取表的IX锁</span><br><span class="line">SELECT * FROM users WHERE id &#x3D; 6 FOR UPDATE;</span><br></pre></td></tr></table></figure>
+
+<p>事务 B 想要获取该行对应表的表锁：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">LOCK TABLES users READ;</span><br></pre></td></tr></table></figure>
+
+<p>由于该表存在IX锁，与表锁互斥，所以事务B需等待事务A释放IX锁才能获取到表锁。</p>
+<h3 id="行锁的3种算法"><a href="#行锁的3种算法" class="headerlink" title="行锁的3种算法"></a>行锁的3种算法</h3><p>InnoDB有3种行锁的算法：</p>
+<ul>
+<li><p>Record Lock: 行锁。==锁的索引，而非自身==。若没设置索引，则会使用隐式的主键(聚簇索引)来进行锁定。</p>
+</li>
+<li><p>Gap Lock: 间隙锁。锁定记录(索引)之间的范围，但不包含记录(索引)本身。</p>
+</li>
+<li><p>Next-Key Lock: Gap Lock + Record Lock，锁定范围并锁定记录(索引)本身</p>
+<p>如一个索引字段包含1、3、5、8，11几个值，则可能被锁定的区间为：</p>
+<p>(负无穷, 1]</p>
+<p>(1, 3]</p>
+<p>(3, 5]</p>
+<p>(5, 8]</p>
+<p>(8, 11]</p>
+<p>(11, 正无穷)</p>
+<ul>
+<li>若执行update account set name = ‘wang’ where id &gt; 7 and id &lt;10(锁住8～18)</li>
+</ul>
+</li>
+</ul>
+<p>  则被锁定区间为[5, 11)，因为7～10跨越了几个区间。</p>
+<ul>
+<li><p>若执行select * from film where name = 8 for update;</p>
+<p>则锁定区间为[5,11)，next-key会锁住当前值所在区间，并对下一个键值加gap lock。</p>
+<p>即插入5、6、7、8、9、10被阻塞、11不会阻塞(亲测)</p>
+<p>问题：为什么锁区间是左开右闭，测试明明是左闭右开</p>
+</li>
+</ul>
+<ul>
+<li>Next-Key Lock优化：当查询的索引含有唯一属性的时候，Next-Key Lock 会进行优化，将其降级为Record Lock，即仅锁住索引本身，不是范围。</li>
+</ul>
+<h2 id="事务"><a href="#事务" class="headerlink" title="事务"></a>事务</h2><p>innodb支持事务，myisim不支持事务。</p>
+<h3 id="事务的基本特性"><a href="#事务的基本特性" class="headerlink" title="事务的基本特性"></a>事务的基本特性</h3><p>理论上说，事务必须同时满足四个特性。</p>
+<ul>
+<li><p>原子性(atomicity)</p>
+<p>事务中的所有操作，要么都做，要么都不做。</p>
+</li>
+<li><p>一致性(consistency)</p>
+<p>事务在执行前后数据库的状态保持一致，完整性约束没有被破坏。</p>
+</li>
+<li><p>隔离性(isolation)</p>
+<p>事务提交前对其他事务不可见。通常使用锁来实现。</p>
+</li>
+<li><p>持久性(durability)</p>
+<p>一旦事务提交，则其所做的修改将会永远保存到数据库中。即使系统发生崩溃，事务执行的结果也不能丢失。</p>
+</li>
+</ul>
+<h3 id="并发一致性问题"><a href="#并发一致性问题" class="headerlink" title="并发一致性问题"></a>并发一致性问题</h3><ul>
+<li><p>丢失修改</p>
+<p>T1 和 T2 两个事务都对一个数据进行修改，T1 先修改，T2 随后修改，T2 的修改覆盖了 T1 的修改。（改改—没改完就改）</p>
+<p><strong>解决：一级封锁协议</strong></p>
+<p>​        事务 T 要修改数据 A 时必须加 X 锁，直到 T 结束才释放锁。</p>
+<p><strong>问题：</strong>在一级封锁协议中，如果仅仅是读数据不对其进行修改，是不需要加锁的，所以它不能保证可重复读和不读“脏”数据（2）。</p>
+</li>
+<li><p>读脏数据</p>
+<p>T1 修改一个数据，T2 随后读取这个数据。如果 T1 撤销了这次修改(回滚)，那么 T2 读取的数据是脏数据。（改读改—没改完就读）</p>
+<p><strong>解决：二级封锁协议</strong></p>
+<p>​    在一级的基础上，要求读取数据 A 时必须加 S 锁，读取完马上释放 S 锁。</p>
+<p><strong>问题：</strong>由于读完数据即可释放S锁，所以它不能保证可重复读（3）。</p>
+</li>
+<li><p>不可重复读</p>
+<p>T2 读取一个数据，T1 对该数据做了修改。如果 T2 再次读取这个数据，此时读取的结果和第一次读取的结果不同。（读改读—没读完就改）</p>
+<p>在一级的基础上，要求读取数据 A 时必须加 S 锁，直到事务结束了才能释放 S 锁。</p>
+<p>（可以解决不可重复读的问题，因为读 A 时，其它事务不能对 A 加 X 锁，从而避免了在读的期间数据发生改变。）</p>
+</li>
+<li><p>幻影读</p>
+<p>T1 读取某个范围的数据，T2 在这个范围内插入新的数据，T1 再次读取这个范围的数据，此时读取的结果和和第一次读取的结果不同。</p>
+<p><strong>小结：不可重复读的和幻读很容易混淆，不可重复读侧重于修改，幻读侧重于新增或删除。解决不可重复读的问题只需锁住满足条件的行，解决幻读需要锁表</strong></p>
+</li>
+</ul>
+<h3 id="事务的隔离级别"><a href="#事务的隔离级别" class="headerlink" title="事务的隔离级别"></a>事务的隔离级别</h3><ul>
+<li><p>未提交读(read uncommitted)</p>
+</li>
+<li><p>提交读(read committed)</p>
+</li>
+<li><p>可重复读(repeatable read) innodb引擎默认</p>
+</li>
+<li><p>可串行化(serializable)</p>
+<p>以上3种隔离级别都允许对同一条记录进行<code>读-读</code>、<code>读-写</code>、<code>写-读</code>的并发操作，如果我们不允许<code>读-写</code>、<code>写-读</code>的并发操作</p>
+</li>
+</ul>
+<h3 id="MVCC"><a href="#MVCC" class="headerlink" title="MVCC"></a>MVCC</h3><p>多版本并发控制（Multi-Version Concurrency Control, MVCC）是 MySQL 的 InnoDB 存储引擎实现隔离级别的一种具体方式，用于实现==提交读==(RC)和==可重复读==(RR)这两种隔离级别。而未提交读隔离级别总是读取最新的数据行，无需使用 MVCC。可串行化隔离级别需要对所有读取的行都加锁，单纯使用 MVCC 无法实现。</p>
+<ul>
+<li><p>快照读与当前读</p>
+<p>在==RR级别==中，通过MVCC机制，虽然让数据变得可重复读，但我们读到的数据可能是历史数据，不是数据库最新的数据。这种读取历史数据的方式，我们叫它快照读 (snapshot read)，而读取数据库最新版本数据的方式，叫当前读 (current read)。</p>
+<p>select操作是innodb默认会执行快照读，对于会对数据修改的操作(update、insert、delete)都是采用当前读的模式。</p>
+<p>select的当前读需要手动的加锁：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> <span class="keyword">table</span> <span class="keyword">where</span> ? <span class="keyword">lock</span> <span class="keyword">in</span> <span class="keyword">share</span> <span class="keyword">mode</span>;</span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> <span class="keyword">table</span> <span class="keyword">where</span> ? <span class="keyword">for</span> <span class="keyword">update</span>;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>版本链与undo日志</p>
+<p>对于使用<code>InnoDB</code>存储引擎的表来说，它的聚簇索引记录中都包含两个必要的隐藏列：</p>
+<ul>
+<li><code>trx_id</code>：每次对某条聚簇索引记录进行改动时，都会把对应的事务id赋值给<code>trx_id</code>隐藏列。</li>
+<li><code>roll_pointer</code>：每次对某条聚簇索引记录进行改动时，都会把旧的版本写入到<code>undo日志</code>中，然后这个隐藏列就相当于一个指针，可以通过它来找到该记录修改前的信息。</li>
+</ul>
+</li>
+<li><p>MVCC核心思想</p>
+<p>对于表t，假设插入该记录的事务id为<code>80</code></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; SELECT * FROM t;</span><br><span class="line">+<span class="comment">----+--------+</span></span><br><span class="line">| id | c      |</span><br><span class="line">+<span class="comment">----+--------+</span></span><br><span class="line">|  1 | 刘备   |</span><br><span class="line">+<span class="comment">----+--------+</span></span><br><span class="line">1 row in <span class="keyword">set</span> (<span class="number">0.01</span> sec)</span><br></pre></td></tr></table></figure>
+
+<p>则当前版本链如下：</p>
+</li>
+</ul>
+  <img src="/blog/2020/08/08/MySQL%E9%94%81%E4%B8%8E%E4%BA%8B%E5%8A%A1/MVCC_mvcc1.png" alt="MVCC_mvcc1" style="zoom:50%;">
+
+
+
+<p>  假设之后两个<code>id</code>分别为<code>100</code>、<code>200</code>的事务对这条记录进行<code>UPDATE</code>操作，操作流程如下：</p>
+  <img src="/blog/2020/08/08/MySQL%E9%94%81%E4%B8%8E%E4%BA%8B%E5%8A%A1/MVCC_版本链.png" alt="MVCC_版本链" style="zoom:50%;">
+
+
+
+<p>  每次对记录进行改动，都会记录一条<code>undo日志</code>，并对应一个<code>roll_pointer</code>。利用<code>roll_pointer</code>可以将undo日志中该条数据所有改动串起来，形成<code>版本链</code>如下：</p>
+  <img src="/blog/2020/08/08/MySQL%E9%94%81%E4%B8%8E%E4%BA%8B%E5%8A%A1/MVCC_mvcc2.png" alt="image-20200804205524358" style="zoom:50%;">
+
+
+
+
+
+<p>  对于RR级别，第一次执行查询sql时会生成当前事务的一致性视图==read-view==。</p>
+<p>  对于RC级别，每一次执行查询sql时会生成当前事务的一致性视图==read-view==。</p>
+<p>  ReadView由执行查询时所有未提交事务id数组（称之为<code>m_ids</code>，数组里最小的id为min_id）和已创建的最大事务id（max_id）组成，记录列表中最小的事务id为在访问某条记录时有如下规则：</p>
+<p>  注意：m_ids之中为当前未提交数组，之外包括==已提交==事务以及==未来的事务==。</p>
+<ul>
+<li><p>如果被访问版本的<code>trx_id</code>属性值小于min_id，表明生成该版本的事务在生成<code>ReadView</code>前已经提交，所以该版本可以被当前事务访问。</p>
+</li>
+<li><p>如果被访问版本的<code>trx_id</code>属性值大于max_id，表明生成该版本的事务在生成<code>ReadView</code>后才生成，所以该版本不可以被当前事务访问。</p>
+</li>
+<li><p>如果被访问版本的<code>trx_id</code>属性值在min_id与max_id之间，那就需要判断一下<code>trx_id</code>属性值是不是在<code>m_ids</code>列表中，如果在，说明创建<code>ReadView</code>时生成该版本的事务还是活跃的，该版本不可以被访问；如果不在，说明创建<code>ReadView</code>时生成该版本的事务已经被提交，该版本可以被访问。</p>
+<p>id 在 m_ids 中：表示未提交，不可访问</p>
+<p>id 不在 m_ids 中：</p>
+<ul>
+<li>已提交</li>
+<li>在未来：id &gt; max_id</li>
+</ul>
+</li>
+</ul>
+<p>  <strong>注意：</strong>begin/start transaction 命令并不是一个事务的起点， 在执行到它们之后的第一个==修改==操作InnoDB表的语句，事务才真正启动，才会向mysql申请事务id，mysql内部是严格按照事务的启动顺序来分配事务id的。</p>
+<h2 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h2><ul>
+<li><p>查看事务隔离级别</p>
+<p>select @@transaction_isolation;</p>
+</li>
+<li><p>查看当前数据库所有表名</p>
+<p>select table_name from information_schema.tables where table_schema=’当前数据库’;</p>
+</li>
+<li><p>显示所有数据库</p>
+<p>show databases;</p>
+</li>
+<li><p>开启事务、提交事务、会滚事务</p>
+<p>start transaction;  、  Commit;   、 Rollback;</p>
+</li>
+</ul>
+<h2 id="面试问题补充"><a href="#面试问题补充" class="headerlink" title="面试问题补充"></a>面试问题补充</h2><ul>
+<li>可重复读如何避免幻读</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/blog/tags/Mysql/" rel="tag"><i class="fa fa-tag"></i> Mysql</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/blog/2020/08/05/Git%E5%AD%A6%E4%B9%A0/" rel="prev" title="常用Git命令">
+      <i class="fa fa-chevron-left"></i> 常用Git命令
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/blog/2020/08/08/Explain%E8%AF%A6%E8%A7%A3/" rel="next" title="Explain执行计划概述">
+      Explain执行计划概述 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+        </div>
+        
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">zhiwen</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="站点总字数">20k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">34 分钟</span>
+</div>
+<!--
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+-->
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/blog/lib/anime.min.js"></script>
+
+<script src="/blog/js/utils.js"></script>
+
+<script src="/blog/js/motion.js"></script>
+
+
+<script src="/blog/js/next-boot.js"></script>
+
+
+  
+
+
+
+
+  
+<script src="/blog/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments('#valine-comments', () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/valine@1/dist/Valine.min.js', () => {
+    new Valine(Object.assign({
+      el  : '#valine-comments',
+      path: location.pathname,
+    }, {"enable":true,"appId":"YvEVD6yA4zSx5oDspjmrOKQd-gzGzoHsz","appKey":"466XudW5NONdY4cnMEa9UaWy","placeholder":"Just say anything u wanna say","avatar":"mm","meta":["nick","mail","link"],"pageSize":10,"language":null,"visitor":false,"comment_count":true,"recordIP":false,"serverURLs":null,"enableQQ":false,"requiredFields":[]}
+    ));
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>
