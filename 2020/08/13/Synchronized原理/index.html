@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.0.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/blog/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/blog/images/images/favicon.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/blog/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/blog/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/blog/css/main.css">
+
+
+<link rel="stylesheet" href="/blog/lib/font-awesome/css/all.min.css">
+  
+  <link rel="stylesheet" href="/blog/lib/animate-css/animate.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"mayeeeeeeee.github.io","root":"/blog/","scheme":"Gemini","version":"8.0.0-rc.5","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"path":"search.json","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
+  </script>
+
+  <meta name="description" content="Abstract本文主要介绍Synchronized原理。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Synchronized原理">
+<meta property="og:url" content="https://mayeeeeeeee.github.io/2020/08/13/Synchronized%E5%8E%9F%E7%90%86/index.html">
+<meta property="og:site_name" content="zhiwen&#39; Blog">
+<meta property="og:description" content="Abstract本文主要介绍Synchronized原理。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://mayeeeeeeee.github.io/blog/2020/08/13/Synchronized%E5%8E%9F%E7%90%86/1.png">
+<meta property="og:image" content="https://mayeeeeeeee.github.io/blog/2020/08/13/Synchronized%E5%8E%9F%E7%90%86/image-20200816212333258.png">
+<meta property="og:image" content="https://mayeeeeeeee.github.io/blog/2020/08/13/Synchronized%E5%8E%9F%E7%90%86/image-20200820201859691.png">
+<meta property="og:image" content="https://mayeeeeeeee.github.io/blog/2020/08/13/Synchronized%E5%8E%9F%E7%90%86/image-20200820210345105.png">
+<meta property="og:image" content="https://mayeeeeeeee.github.io/blog/2020/08/13/Synchronized%E5%8E%9F%E7%90%86/image-20200820210604909.png">
+<meta property="og:image" content="https://mayeeeeeeee.github.io/blog/2020/08/13/Synchronized%E5%8E%9F%E7%90%86/image-20200820211602083.png">
+<meta property="og:image" content="https://mayeeeeeeee.github.io/blog/2020/08/13/Synchronized%E5%8E%9F%E7%90%86/image-20200820212314840.png">
+<meta property="og:image" content="https://mayeeeeeeee.github.io/blog/2020/08/13/Synchronized%E5%8E%9F%E7%90%86/1-7972852.png">
+<meta property="article:published_time" content="2020-08-13T12:11:49.000Z">
+<meta property="article:modified_time" content="2020-08-21T01:21:50.081Z">
+<meta property="article:author" content="zhiwen">
+<meta property="article:tag" content="并发编程">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://mayeeeeeeee.github.io/blog/2020/08/13/Synchronized%E5%8E%9F%E7%90%86/1.png">
+
+<link rel="canonical" href="https://mayeeeeeeee.github.io/2020/08/13/Synchronized%E5%8E%9F%E7%90%86/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+  
+    (function(){
+        if(''){
+            if (prompt('请输入文章密码') !== ''){
+                alert('密码错误！');
+                history.back();
+            }
+        }
+    })();
+
+</script>
+
+  <title>Synchronized原理 | zhiwen' Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <main class="main">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+        <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/blog/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">zhiwen' Blog</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/blog/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/blog/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/blog/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/blog/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <section class="post-toc-wrap sidebar-panel">
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Abstract"><span class="nav-number">1.</span> <span class="nav-text">Abstract</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Monitor%E7%9B%91%E8%A7%86%E5%99%A8%E9%94%81"><span class="nav-number">2.</span> <span class="nav-text">Monitor监视器锁</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Java%E5%AF%B9%E8%B1%A1%E5%A4%B4"><span class="nav-number">3.</span> <span class="nav-text">Java对象头</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%94%81%E7%9A%84%E8%86%A8%E8%83%80%E5%8D%87%E7%BA%A7"><span class="nav-number">4.</span> <span class="nav-text">锁的膨胀升级</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%81%8F%E5%90%91%E9%94%81"><span class="nav-number">4.1.</span> <span class="nav-text">偏向锁</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BD%BB%E9%87%8F%E7%BA%A7%E9%94%81"><span class="nav-number">4.2.</span> <span class="nav-text">轻量级锁</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%94%81%E7%9A%84%E5%8D%87%E7%BA%A7%E8%BF%87%E7%A8%8B"><span class="nav-number">4.3.</span> <span class="nav-text">锁的升级过程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%87%AA%E6%97%8B%E9%94%81"><span class="nav-number">4.4.</span> <span class="nav-text">自旋锁</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%94%81%E6%B8%85%E9%99%A4"><span class="nav-number">4.5.</span> <span class="nav-text">锁清除</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%80%83%E9%80%B8%E5%88%86%E6%9E%90"><span class="nav-number">4.6.</span> <span class="nav-text">逃逸分析</span></a></li></ol></li></ol></div>
+      </section>
+      <!--/noindex-->
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="zhiwen"
+      src="/blog/images/avatar.png">
+  <p class="site-author-name" itemprop="name">zhiwen</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/blog/archives/">
+        
+          <span class="site-state-item-count">9</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/blog/categories/">
+          
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/blog/tags/">
+          
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </section>
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </header>
+
+      
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div id="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+      <div class="main-inner">
+        
+
+        <div class="content post posts-expand">
+          
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://mayeeeeeeee.github.io/2020/08/13/Synchronized%E5%8E%9F%E7%90%86/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/blog/images/avatar.png">
+      <meta itemprop="name" content="zhiwen">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="zhiwen' Blog">
+    </span>
+
+    
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Synchronized原理
+        </h1>
+
+        <div class="post-meta">
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-08-13 20:11:49" itemprop="dateCreated datePublished" datetime="2020-08-13T20:11:49+08:00">2020-08-13</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-08-21 09:21:50" itemprop="dateModified" datetime="2020-08-21T09:21:50+08:00">2020-08-21</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/blog/categories/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/blog/2020/08/13/Synchronized%E5%8E%9F%E7%90%86/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/blog/2020/08/13/Synchronized%E5%8E%9F%E7%90%86/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+              <span>7.5k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+              <span>12 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="Abstract"><a href="#Abstract" class="headerlink" title="Abstract"></a>Abstract</h1><p>本文主要介绍Synchronized原理。</p>
+<a id="more"></a>
+
+<h1 id="Monitor监视器锁"><a href="#Monitor监视器锁" class="headerlink" title="Monitor监视器锁"></a>Monitor监视器锁</h1><p><code>Syncronized</code>是基于JVM实现的。具体是通过进出<code>Monitor</code>(监视器锁)对象来实现。使用Syncronized修饰的代码块编译后会在代码块开始的位置插入一条<code>monitorenter</code>指令(进入Monitor)，在代码结束处和异常处插入一条<code>monitorexit</code>指令(退出Monitor)。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Syncronized修饰代码块</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">add</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">synchronized</span> (<span class="keyword">this</span>) &#123;</span><br><span class="line">        <span class="comment">// 自加10000次</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">10000</span>; i++) &#123;</span><br><span class="line">            count++;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 编译后的字节码</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">add</span><span class="params">()</span></span>;</span><br><span class="line">    descriptor: ()V</span><br><span class="line">    flags: ACC_PUBLIC</span><br><span class="line">    Code:</span><br><span class="line">      stack=<span class="number">2</span>, locals=<span class="number">4</span>, args_size=<span class="number">1</span></span><br><span class="line">         <span class="number">0</span>: aload_0</span><br><span class="line">         <span class="number">1</span>: dup</span><br><span class="line">         <span class="number">2</span>: astore_1</span><br><span class="line">         <span class="number">3</span>: monitorenter                      <span class="comment">//monitorenter</span></span><br><span class="line">         <span class="number">4</span>: iconst_0</span><br><span class="line">         <span class="number">5</span>: istore_2</span><br><span class="line">         <span class="number">6</span>: iload_2</span><br><span class="line">         <span class="number">7</span>: sipush        <span class="number">10000</span></span><br><span class="line">        <span class="number">10</span>: if_icmpge     <span class="number">27</span></span><br><span class="line">        13: getstatic     #3                  // Field count:I</span><br><span class="line">        <span class="number">16</span>: iconst_1</span><br><span class="line">        <span class="number">17</span>: iadd</span><br><span class="line">        18: putstatic     #3                  // Field count:I</span><br><span class="line">        <span class="number">21</span>: iinc          <span class="number">2</span>, <span class="number">1</span></span><br><span class="line">        <span class="number">24</span>: goto          <span class="number">6</span></span><br><span class="line">        <span class="number">27</span>: aload_1</span><br><span class="line">        <span class="number">28</span>: monitorexit                       <span class="comment">//monitorexit</span></span><br><span class="line">        <span class="number">29</span>: goto          <span class="number">37</span></span><br><span class="line">        <span class="number">32</span>: astore_3</span><br><span class="line">        <span class="number">33</span>: aload_1</span><br><span class="line">        <span class="number">34</span>: monitorexit                       <span class="comment">//monitorexit</span></span><br><span class="line">        <span class="number">35</span>: aload_3</span><br><span class="line">        <span class="number">36</span>: athrow</span><br><span class="line">        <span class="number">37</span>: <span class="keyword">return</span></span><br></pre></td></tr></table></figure>
+
+<p>上例代码中第19行为monitorenter指令。第32、36行monitorexit指令。monitorexit，指令出现了两次，第1次为同步<strong>正常退出</strong>释放锁；第2次为发生<strong>异步退出</strong>释放锁；Synchronized修饰方法和代码块，具体实现细节不一样，但是都可以通过成对的monitorenter和monitorexit指令来实现。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Synchronized修饰方法</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">add</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 自加10000次</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">10000</span>; i++) &#123;</span><br><span class="line">            count++;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"><span class="comment">// 编译后的字节码</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">add</span><span class="params">()</span></span>;</span><br><span class="line">    descriptor: ()V</span><br><span class="line">    flags: ACC_PUBLIC, ACC_SYNCHRONIZED</span><br><span class="line">    Code:</span><br><span class="line">      stack=<span class="number">2</span>, locals=<span class="number">2</span>, args_size=<span class="number">1</span></span><br><span class="line">         <span class="number">0</span>: iconst_0</span><br><span class="line">         <span class="number">1</span>: istore_1</span><br><span class="line">         <span class="number">2</span>: iload_1</span><br><span class="line">         <span class="number">3</span>: sipush        <span class="number">10000</span></span><br><span class="line">         <span class="number">6</span>: if_icmpge     <span class="number">23</span></span><br><span class="line">         9: getstatic     #3                  // Field count:I</span><br><span class="line">        <span class="number">12</span>: iconst_1</span><br><span class="line">        <span class="number">13</span>: iadd</span><br><span class="line">        14: putstatic     #3                  // Field count:I</span><br><span class="line">        <span class="number">17</span>: iinc          <span class="number">1</span>, <span class="number">1</span></span><br><span class="line">        <span class="number">20</span>: goto          <span class="number">2</span></span><br><span class="line">        <span class="number">23</span>: <span class="keyword">return</span></span><br></pre></td></tr></table></figure>
+
+<p>可以看出，方法的同步并没有通过指令 <strong>monitorenter</strong> 和 <strong>monitorexit</strong> 来完成（理论上可以实现），不过相对于普通方法，其常量池中多了 <strong>ACC_SYNCHRONIZED</strong> 标示符。<strong>JVM就是根据该标示符来实现方法的同步的</strong>：</p>
+<p>当方法调用时，<strong>调用指令将会检查方法的 ACC_SYNCHRONIZED 访问标志是否被设置</strong>，如果设置了，<strong>执行线程将先获取monitor</strong>，获取成功之后才能执行方法体，<strong>方法执行完后再释放monitor</strong>。在方法执行期间，其他任何线程都无法再获得同一个monitor对象。</p>
+<p>两种同步方式本质上没有区别，只是方法的同步是一种隐式的方式来实现，无需通过字节码来完成。</p>
+<ul>
+<li><p><strong>monitorenter</strong></p>
+<p><strong>每个对象都是一个监视器锁（monitor）</strong>。当monitor被占用时就会处于锁定状态，线程执行monitorenter指令时尝试获取monitor的所有权，过程如下：</p>
+<ul>
+<li><ol>
+<li><strong>如果monitor的进入数为0</strong>，则该线程进入monitor，然后将进入数设置为1，该线程即为monitor的所有者；</li>
+<li><strong>如果线程已经占有该monitor</strong>，只是重新进入，则进入monitor的进入数加1；</li>
+<li><strong>如果其他线程已经占用了monitor</strong>，则该线程进入阻塞状态，直到monitor的进入数为0，再重新尝试获取monitor的所有权；</li>
+</ol>
+</li>
+</ul>
+</li>
+<li><p><strong>monitorexit</strong>：执行monitorexit的线程必须是objectref所对应的monitor的所有者。<strong>指令执行时，monitor的进入数减1，如果减1后进入数为0，那线程退出monitor，不再是这个monitor的所有者</strong>。其他被这个monitor阻塞的线程可以尝试去获取这个 monitor 的所有权。</p>
+</li>
+</ul>
+<p><strong>两个指令的执行是JVM通过调用操作系统的互斥原语mutex来实现，被阻塞的线程会被挂起、等待重新调度</strong>，会导致“用户态和内核态”两个态之间来回切换，对性能有较大影响。</p>
+<p><code>Monitor</code>是由ObjectMonitor.hpp(c++)实现。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">ObjectMonitor() &#123;</span><br><span class="line">    _header       = <span class="literal">NULL</span>;</span><br><span class="line">    _count        = <span class="number">0</span>; <span class="comment">// 计数器</span></span><br><span class="line">    _waiters      = <span class="number">0</span>,</span><br><span class="line">    _recursions   = <span class="number">0</span>;</span><br><span class="line">    _object       = <span class="literal">NULL</span>;</span><br><span class="line">    _owner        = <span class="literal">NULL</span>; <span class="comment">// 持有锁的线程</span></span><br><span class="line">    _WaitSet      = <span class="literal">NULL</span>; <span class="comment">// 等待队列_WaitSet</span></span><br><span class="line">    _WaitSetLock  = <span class="number">0</span> ;</span><br><span class="line">    _Responsible  = <span class="literal">NULL</span> ;</span><br><span class="line">    _succ         = <span class="literal">NULL</span> ;</span><br><span class="line">    _cxq          = <span class="literal">NULL</span> ;</span><br><span class="line">    FreeNext      = <span class="literal">NULL</span> ;</span><br><span class="line">    _EntryList    = <span class="literal">NULL</span> ; <span class="comment">// 阻塞队列_EntryList</span></span><br><span class="line">    _SpinFreq     = <span class="number">0</span> ;</span><br><span class="line">    _SpinClock    = <span class="number">0</span> ;</span><br><span class="line">    OwnerIsThread = <span class="number">0</span> ;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+
+<p>当多个线程同时访问一段同步代码时：</p>
+<ol>
+<li>首先会进入 _EntryList 集合，<strong>当线程获取到对象的monitor后，进入 _Owner区域并把monitor中的owner变量设置为当前线程，同时monitor中的计数器count加1</strong>；</li>
+<li>若线程调用 wait() 方法，<strong>将释放当前持有的monitor，owner变量恢复为null，count自减1，同时该线程进入 WaitSet集合中等待被唤醒</strong>；</li>
+<li>若当前线程执行完毕，**也将释放monitor（锁）并复位count的值，以便其他线程进入获取monitor(锁)**；</li>
+</ol>
+<p><strong>同时notify/notifyAll/wait等方法会使用到Monitor锁对象，所以必须在同步代码块中使用</strong>。</p>
+<p>Monitor对象存在于每个Java对象的对象头Mark Word中（存储的指针的指向），Synchronized锁便是通过这种方式获取锁的。</p>
+<h1 id="Java对象头"><a href="#Java对象头" class="headerlink" title="Java对象头"></a>Java对象头</h1><p>HotSpot虚拟机中，对象在内存中存储的布局可以分为三块区域：对象头（Header）、实例数据（Instance Data）和对齐填充（Padding）。</p>
+<ul>
+<li><p>对象头：比如 hash码，对象所属的年代，对象锁，锁状态标志，偏向锁（线程）ID，偏向时间，数组长度（数组对象）等。Java对象头一般占有==2个字宽==（在32位虚拟机中字宽为32bit，在64位虚拟机中，字宽为64bit），但是如果对象是数组类型，则需要==3个字宽==，多一个用于记录数组的长度。MarkWord、类元信息指针、数组长度各占==1个字宽==</p>
+</li>
+<li><p>实例数据：存放类的属性数据信息，包括父类的属性信息；</p>
+</li>
+<li><p>对齐填充：由于虚拟机要求 <strong>对象起始地址必须是8字节的整数倍</strong>。填充数据不是必须存在的，仅仅是为了字节对齐；</p>
+<img src="/blog/2020/08/13/Synchronized%E5%8E%9F%E7%90%86/1.png" alt="1" style="zoom:75%;">
+
+
+
+</li>
+</ul>
+<p>在运行期间Mark Word存储的数据是变化的。</p>
+<img src="/blog/2020/08/13/Synchronized%E5%8E%9F%E7%90%86/image-20200816212333258.png" alt="image-20200816212333258" style="zoom:80%;">
+
+<p>现在我们虚拟机基本是64位的，64位虚拟机对象引用占8字节。JVM默认会开启指针压缩，所以基本上也是按32位的形式记录对象头的。</p>
+<p>oop（ordinary object pointer），即普通对象指针，是JVM中用于代表引用对象的句柄。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">手动设置开启压缩指针-XX:+UseCompressedOops</span><br></pre></td></tr></table></figure>
+
+<p><strong>哪些信息会被压缩</strong>？</p>
+<p>1.对象的全局静态变量(即类属性)指针</p>
+<p>2.对象头信息：64位平台下，原生对象头大小为16字节，压缩后为12字节（类元信息指针被压缩，Markwork不变，即Markword=8字节，类元信息指针压缩后=4字节）</p>
+<p>3.对象的引用类型：64位平台下，引用类型本身大小为8字节，压缩后为4字节</p>
+<p>4.对象数组类型：64位平台下，数组类型本身大小为24字节，压缩后16字节</p>
+<p><strong>哪些信息不会被压缩？</strong></p>
+<p>1.指向非Heap的对象指针</p>
+<p>2.局部变量、传参、返回值、NULL指针</p>
+<p>总结一下：压缩的通常是指针（引用类型，表示地址），因为压缩的原理就是32位（左移3位，亦可称35位）代替原来64位的地址。所以本质压缩的就是地址。不会压缩的就是非指针、以及一些特殊的指针。</p>
+<h1 id="锁的膨胀升级"><a href="#锁的膨胀升级" class="headerlink" title="锁的膨胀升级"></a>锁的膨胀升级</h1><p>锁的状态总共有四种，无锁状态、偏向锁、轻量级锁和重量级锁。随着锁的竞争，锁可以从偏向锁升级到轻量级锁，再升级的重量级锁，但是锁的升级是单向的，也就是说只能从低到高升级，不会出现锁的降级。</p>
+<h2 id="偏向锁"><a href="#偏向锁" class="headerlink" title="偏向锁"></a>偏向锁</h2><p>如果一个线程获得了锁，那么锁就进入偏向模式，此时Mark Word 的结构也变为偏向锁结构，当这个线程再次请求锁时，无需再做任何同步操作，即获取锁的过程，这样就省去了大量有关锁申请的操作，从而也就提供程序的性能。</p>
+<p>对于锁竞争比较激烈的场合，偏向锁就失效。</p>
+<p>Java 1.6之后默认开启偏向锁。可以使用<code>-XX:-UseBiasedLocking</code>关闭偏向锁。</p>
+<p><strong>虚拟机为防止程序刚启动时竞争偏向锁激烈，造成资源浪费，在启动4s后才开启偏向锁。</strong></p>
+<p><strong>当一个对象自身未加锁时，虚拟机会默认为其加一个偏向锁，但向的线程为空，称为“匿名偏向”。</strong></p>
+<p><strong>实验1</strong>：无锁状态与匿名偏向</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">    Object o = <span class="keyword">new</span> Object();</span><br><span class="line">    <span class="comment">// 打印对象布局信息（使用的分析工具JOL，是OpenJDK开源工具包）</span></span><br><span class="line">    System.out.println((ClassLayout.parseInstance(o).toPrintable()));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>输出：</p>
+<p><img src="/blog/2020/08/13/Synchronized%E5%8E%9F%E7%90%86/image-20200820201859691.png" alt="image-20200820201859691"></p>
+<p>可以看出Markword锁标志位位<code>01</code>(小端存储模式)，偏向状态为0，即为无锁状态。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 执行前睡眠5s</span></span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">            Thread.sleep(<span class="number">5000</span>);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    Object o = <span class="keyword">new</span> Object();</span><br><span class="line">    System.out.println((ClassLayout.parseInstance(o).toPrintable()));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>输出：</p>
+<p><img src="/blog/2020/08/13/Synchronized%E5%8E%9F%E7%90%86/image-20200820210345105.png" alt="image-20200820210345105"></p>
+<p>延迟5s后，锁类型变为偏向锁，但偏向线程id为0，即为匿名偏向。</p>
+<p><strong>实验2：</strong>偏向锁</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 执行前睡眠5s</span></span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">            Thread.sleep(<span class="number">5000</span>);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    Object o = <span class="keyword">new</span> Object();</span><br><span class="line">    System.out.println((ClassLayout.parseInstance(o).toPrintable()));</span><br><span class="line">    <span class="comment">// 开启一个线程获取锁</span></span><br><span class="line">    <span class="keyword">new</span> Thread(()-&gt;&#123;</span><br><span class="line">        <span class="keyword">synchronized</span> (o)&#123;</span><br><span class="line">            System.out.println((ClassLayout.parseInstance(o).toPrintable()));</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;).start();</span><br></pre></td></tr></table></figure>
+
+<p>输出：</p>
+<p><img src="/blog/2020/08/13/Synchronized%E5%8E%9F%E7%90%86/image-20200820210604909.png" alt="image-20200820210604909"></p>
+<p>当对象加了锁后（无竞争），偏向线程即为获取到锁的线程。</p>
+<h2 id="轻量级锁"><a href="#轻量级锁" class="headerlink" title="轻量级锁"></a>轻量级锁</h2><p>倘若偏向锁失败，会尝试使用轻量级锁，此时Mark Word 的结构也变为轻量级锁的结构。轻量级锁能够提升程序性能的依据是“对绝大部分的锁，在整个同步周期内都不存在竞争”，注意这是经验数据。需要了解的是，轻量级锁所适应的场景是线程交替执行同步块的场合。</p>
+<p>如果存在同一时间访问同一锁的场合，就会导致轻量级锁膨胀为重量级锁。</p>
+<p><strong>实验3：</strong>轻量级锁</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 执行前睡眠5s</span></span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        Thread.sleep(<span class="number">5000</span>);</span><br><span class="line">    &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">        e.printStackTrace();</span><br><span class="line">    &#125;</span><br><span class="line">    Object o = <span class="keyword">new</span> Object();</span><br><span class="line">    System.out.println((ClassLayout.parseInstance(o).toPrintable()));</span><br><span class="line">    <span class="comment">// 开启一个线程获取锁</span></span><br><span class="line">    <span class="keyword">new</span> Thread(()-&gt;&#123;</span><br><span class="line">        <span class="keyword">synchronized</span> (o)&#123;</span><br><span class="line">            System.out.println((ClassLayout.parseInstance(o).toPrintable()));</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;).start();</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="comment">// 睡眠2s，等待上面线程执行完释放锁后再获取锁</span></span><br><span class="line">        Thread.sleep(<span class="number">2000</span>);</span><br><span class="line">    &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">        e.printStackTrace();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>输出：</p>
+<p><img src="/blog/2020/08/13/Synchronized%E5%8E%9F%E7%90%86/image-20200820211602083.png" alt="image-20200820211602083"></p>
+<p>当第一个线程执行完释放锁，第二个线程再获取锁，锁升级为轻量级锁。</p>
+<p><strong>实验4：</strong>重量级锁</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> InterruptedException </span>&#123;</span><br><span class="line">        Thread.sleep(<span class="number">5000</span>);</span><br><span class="line">        Object a = <span class="keyword">new</span> Object();</span><br><span class="line"></span><br><span class="line">        Thread thread1 = <span class="keyword">new</span> Thread()&#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">                <span class="keyword">synchronized</span> (a)&#123;</span><br><span class="line">                    System.out.println(<span class="string">&quot;thread1 locking&quot;</span>);</span><br><span class="line">                    System.out.println(ClassLayout.parseInstance(a).toPrintable());</span><br><span class="line">                    <span class="keyword">try</span> &#123;</span><br><span class="line">                        <span class="comment">//让线程晚点儿死亡，造成锁的竞争</span></span><br><span class="line">                        Thread.sleep(<span class="number">2000</span>);</span><br><span class="line">                    &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                        e.printStackTrace();</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;;</span><br><span class="line">        Thread thread2 = <span class="keyword">new</span> Thread()&#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">                <span class="keyword">synchronized</span> (a)&#123;</span><br><span class="line">                    System.out.println(<span class="string">&quot;thread2 locking&quot;</span>);</span><br><span class="line">                    System.out.println(ClassLayout.parseInstance(a).toPrintable());</span><br><span class="line">                    <span class="keyword">try</span> &#123;</span><br><span class="line">                        Thread.sleep(<span class="number">2000</span>);</span><br><span class="line">                    &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                        e.printStackTrace();</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;;</span><br><span class="line">        thread1.start();</span><br><span class="line">        thread2.start();</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>输出：</p>
+<p><img src="/blog/2020/08/13/Synchronized%E5%8E%9F%E7%90%86/image-20200820212314840.png" alt="image-20200820212314840"></p>
+<p>当两个线程开始竞争锁资源时，锁升级为重量级锁。</p>
+<h2 id="锁的升级过程"><a href="#锁的升级过程" class="headerlink" title="锁的升级过程"></a>锁的升级过程</h2><p><img src="/blog/2020/08/13/Synchronized%E5%8E%9F%E7%90%86/1-7972852.png" alt="1"></p>
+<h2 id="自旋锁"><a href="#自旋锁" class="headerlink" title="自旋锁"></a>自旋锁</h2><p>轻量级锁失败后，会进行一项称为自旋锁的优化手段。这是基于在大多数情况下，线程持有锁的时间都不会太长，如果直接挂起操作系统层面的线程可能会得不偿失，毕竟操作系统实现线程之间的切换时需要从用户态转换到核心态，这个状态之间的转换需要相对比较长的时间，时间成本相对较高，因此自旋锁会假设在不久将来，当前的线程可以获得锁，因此虚拟机会让当前想要获取锁的线程做几个空循环(这也是称为自旋的原因)，一般不会太久，可能是50个循环或100循环，在经过若干次循环后，如果得到锁，就顺利进入临界区。</p>
+<p>如果还不能获得锁，那就会将线程在操作系统层面挂起，这就是自旋锁的优化方式，这种方式确实也是可以提升效率的。最后没办法也就只能升级为重量级锁了。</p>
+<h2 id="锁清除"><a href="#锁清除" class="headerlink" title="锁清除"></a>锁清除</h2><p>消除锁是虚拟机另外一种锁的优化，这种优化更彻底，Java虚拟机在JIT编译时(可以简单理解为当某段代码即将第一次被执行时进行编译，又称即时编译)，通过对运行上下文的扫描，去除不可能存在共享资源竞争的锁，通过这种方式消除没有必要的锁，可以节省毫无意义的请求锁时间，如下StringBuffer的append是一个同步方法，但是在add方法中的StringBuffer属于一个局部变量，并且不会被其他线程所使用，因此StringBuffer不可能存在共享资源竞争的情景，JVM会自动将其锁消除。</p>
+<p><strong>锁消除的依据是逃逸分析的数据支持。</strong>锁消除，前提是java必须运行在server模式（server模式会比client模式作更多的优化），同时必须开启逃逸分析。</p>
+<h2 id="逃逸分析"><a href="#逃逸分析" class="headerlink" title="逃逸分析"></a>逃逸分析</h2><p>使用逃逸分析，编译器可以对代码做如下优化：</p>
+<blockquote>
+<p>一、同步省略。如果一个对象被发现只能从一个线程被访问到，那么对于这个对象的操作可以不考虑同步。</p>
+<p>二、将堆分配转化为栈分配。如果一个对象在子程序中被分配，要使指向该对象的指针永远不会逃逸，对象可能是栈分配的候选，而不是堆分配。</p>
+<p>三、分离对象或标量替换。有的对象可能不需要作为一个连续的内存结构存在也可以被访问到，那么对象的部分（或全部）可以不存储在内存，而是存储在CPU寄存器中。</p>
+</blockquote>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/blog/tags/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/" rel="tag"><i class="fa fa-tag"></i> 并发编程</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/blog/2020/08/10/Synchronized%E7%94%A8%E6%B3%95/" rel="prev" title="Synchronized用法">
+      <i class="fa fa-chevron-left"></i> Synchronized用法
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/blog/2020/08/16/%E5%B0%8F%E7%99%BD%E9%BC%A0%E8%AF%95%E6%AF%92%E9%97%AE%E9%A2%98/" rel="next" title="小白鼠试毒问题">
+      小白鼠试毒问题 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+        </div>
+        
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">zhiwen</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="站点总字数">29k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">49 分钟</span>
+</div>
+<!--
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+-->
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/blog/lib/anime.min.js"></script>
+
+<script src="/blog/js/utils.js"></script>
+
+<script src="/blog/js/motion.js"></script>
+
+
+<script src="/blog/js/next-boot.js"></script>
+
+
+  
+
+
+
+
+  
+<script src="/blog/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments('#valine-comments', () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/valine@1/dist/Valine.min.js', () => {
+    new Valine(Object.assign({
+      el  : '#valine-comments',
+      path: location.pathname,
+    }, {"enable":true,"appId":"YvEVD6yA4zSx5oDspjmrOKQd-gzGzoHsz","appKey":"466XudW5NONdY4cnMEa9UaWy","placeholder":"Just say anything u wanna say","avatar":"mm","meta":["nick","mail","link"],"pageSize":10,"language":null,"visitor":false,"comment_count":true,"recordIP":false,"serverURLs":null,"enableQQ":false,"requiredFields":[]}
+    ));
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>
